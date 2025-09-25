@@ -1,0 +1,53 @@
+
+
+
+# //Local wind speed and direction
+        /**
+	 * Compute the wind to use, allowing listeners to override.
+	 * 
+	 * @param status	the simulation status
+	 * @return			the wind conditions to use
+	 * @throws SimulationException	if a listener throws SimulationException
+	 */
+	protected Coordinate modelWindVelocity(SimulationStatus status) throws SimulationException {
+		Coordinate wind;
+
+		// Call pre-listener
+		wind = SimulationListenerHelper.firePreWindModel(status);
+		if (wind != null) {
+			return wind;
+		}
+
+		// Compute conditions
+		double altitudeAGL = status.getRocketPosition().z;
+		double altitudeMSL = altitudeAGL + status.getSimulationConditions().getLaunchSite().getAltitude();
+		wind = status.getSimulationConditions().getWindModel().getWindVelocity(status.getSimulationTime(), altitudeMSL, altitudeAGL);
+
+		// Call post-listener
+		wind = SimulationListenerHelper.firePostWindModel(status, wind);
+
+		checkNaN(wind, "wind");
+
+		return wind;
+        
+		store.windVelocity = modelWindVelocity(status);
+		Coordinate airSpeed = status.getRocketVelocity().add(store.windVelocity);
+		airSpeed = status.getRocketOrientationQuaternion().invRotate(airSpeed);
+        double len = MathUtil.hypot(airSpeed.x, airSpeed.y);
+		if (len > 0.0001) {
+			store.thetaRotation = new Rotation2D(airSpeed.y / len, airSpeed.x / len);
+			store.flightConditions.setTheta(Math.atan2(airSpeed.y, airSpeed.x));
+		} else {
+			store.thetaRotation = Rotation2D.ID;
+			store.flightConditions.setTheta(0);
+		}
+		
+		double velocity = airSpeed.length();
+		store.flightConditions.setVelocity(velocity);
+		if (velocity > 0.01) {
+			// aoa must be calculated from the monotonous cosine
+			// sine can be calculated by a simple division
+			store.flightConditions.setAOA(Math.acos(airSpeed.z / velocity), len / velocity);
+		} else {
+			store.flightConditions.setAOA(0);
+		}
