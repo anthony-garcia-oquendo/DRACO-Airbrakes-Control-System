@@ -1,0 +1,4 @@
+
+# Sensors 
+adafruit-circuitpython-icm20x
+adafruit-circuitpython-bmp3xx
