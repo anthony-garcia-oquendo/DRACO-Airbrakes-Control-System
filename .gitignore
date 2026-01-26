@@ -3,19 +3,17 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.egg-info/
-dist/
-build/
 
 # Virtual env
 .venv/
 venv/
 ENV/
 
-# VS Code
+# IDE
 .vscode/
 
 # Logs / data
 *.log
 *.csv
+*.dat
 *.npz
