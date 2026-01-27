@@ -1,3 +1,5 @@
+# Hardware abstraction (board, pwmio)
+adafruit-blinka
 
 # Sensors 
 adafruit-circuitpython-icm20x
