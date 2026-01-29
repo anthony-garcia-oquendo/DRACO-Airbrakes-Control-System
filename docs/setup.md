@@ -12,3 +12,9 @@
 
 ### 4. Install Requirements
 > pip install -r requirements.txt
+
+# Install dependecies
+> sudo apt update
+> sudo apt install -y swig python3-dev build-essential
+> sudo apt install liblgpio-dev
+> pip install rpi-lgpio
