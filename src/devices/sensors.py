@@ -1,7 +1,7 @@
 import time
 
 import adafruit_bmp3xx
-import adafruit_icm20xx
+import adafruit_icm20x
 
 class BMP390:
     def __init__(self, i2c):
@@ -13,6 +13,16 @@ class BMP390:
     
     def altitude(self):
         return meters_to_feet(self.altimeter.altitude)
+    
+    def pressure(self):
+        return hPa_to_psi(self.altimeter.pressure)
+    
+    def air_density(self):
+        R = 287.05 # J/kg-K (dry air gas const)
+        T_kelvin = self.altimeter.temperature + 273.15 
+        P_pascals = self.altimeter.pressure * 100 
+        rho_kg_m3 = P_pascals / (R * T_kelvin)
+        return kg_m3_to_lbm_ft3(rho_kg_m3) # lbm/ft^3
 
     def zero(self, n=100, wait=0.01):
         pressure_sum = 0
@@ -26,30 +36,36 @@ class BMP390:
 
 
 class ICM20948:
-    def __init__(self, i2c) -> None:
+    def __init__(self, i2c, ) -> None:
         self.imu = adafruit_bno055.BNO055_I2C(i2c)
 
-        # Configure the BNO055 to operate in 16g mode.
-        # Unfortunately, a typo in the datasheet implied that
-        # 16g mode is compatible with fusion (orientation) modes;
-        # however, that is not true. We prioritize correct
-        # acceleration values over Euler angles.
-        self.imu.mode = adafruit_bno055.CONFIG_MODE
-        self.imu.accel_range = adafruit_bno055.ACCEL_16G
-        self.imu.mode = adafruit_bno055.AMG_MODE
+        # Gyro: choose the largest range to avoid saturation during fast roll/spin.
+        self.imu.gyro_range = adafruit_icm20x.GyroRange.RANGE_2000_DPS
+
+        # Start in high-g mode for Launch
+        self.set_accel_high_g()
+
+    def set_accel_high_g(self):
+        # Boost phase: prevent clipping from thrust/vibration/shock.
+        self.imu.accel_range = adafruit_icm20x.AccelRange.RANGE_16G
+
+    def set_accel_post_burnout(self):
+        # Post-burnout/coast: lowering accel range improves resolution
+        # (more LSB per g), which helps detect smaller acceleration changes
+        # and generally gives cleaner data for filtering/estimation.
+        self.imu.accel_range = adafruit_icm20x.AccelRange.RANGE_8G
 
     def acceleration(self):
-        return tuple(map(meters_to_feet, self.imu.acceleration))
-
-    def magnetic(self):
-        return tuple(self.imu.magnetic)
+    return tuple(self.imu.acceleration)  # ft/s^2
 
     def gyro(self):
-        return tuple(self.imu.gyro)
-        
-    def euler(self):
-        return self.imu.euler
+        return tuple(self.imu.gyro)  # rad/s 
 
+    def magnetic(self):
+        return tuple(self.imu.magnetic)  # uT
+    
+    def reset(self):
+        self.imu.reset()
 
 def meters_to_feet(n):
     return n * 3.28084
@@ -59,3 +75,16 @@ def celsius_to_fahrenheit(n):
 
 def newtons_to_pounds(n):
     return n * 0.224809
+
+def hPa_to_psi(n):
+    # Converts hPa (hectopascals) to PSI
+    # 1 hPa = 0.0145038 PSI
+    return n * 0.0145038
+
+def kg_m3_to_lbm_ft3(n):
+    # Standard conversion: 1 kg/m³ ≈ 0.06243 lbm/ft³
+    return n * 0.06242796
+
+def microtesla_to_gauss(ut):
+    # 1 Gauss = 100 microTesla (uT)
+    return ut / 100.0
