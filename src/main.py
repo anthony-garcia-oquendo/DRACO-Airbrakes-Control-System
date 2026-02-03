@@ -46,7 +46,7 @@ HEADERS = [
 now = datetime.now().strftime("%Y%m%d_%H:%M:%S")
 OUTPUT_DATA_PATH = f"{OUTPUT_DIRECTORY}/data_{now}.csv"
 OUTPUT_LOG_PATH = f"{OUTPUT_DIRECTORY}/log_{now}.log"
-logging.basicConfig(filename=OUTPUT_LOG_PATH, level=logging.DEBUG, filemode="w")
+logging.basicConfig(filename=OUTPUT_LOG_PATH, level=logging.DEBUG, filemode="w", force=True)
 logging.getLogger().addHandler(logging.StreamHandler()) # send log messages to terminal
 
 # Jokes.
