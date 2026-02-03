@@ -9,11 +9,17 @@ import csv
 from datetime import datetime
 import logging
 import time
+import os
 
 from devices.sensors import BMP390, ICM20948
 
 # Output data constants.
-OUTPUT_DIRECTORY = "data/20260130_Test1"
+current_directory = os.getcwd()
+date = datetime.now().strftime("%Y%m%d")
+launch = "Test1"
+OUTPUT_DIRECTORY = f"/{current_directory}/data/{date}_{launch}"
+os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
+
 HEADERS = [
     "Time",
     "State",
@@ -32,7 +38,8 @@ HEADERS = [
     "Gyro Y",
     "Gyro Z",
     "Temperature",
-    "Pressure"
+    "Pressure",
+    "Air Density"
 ]
 
 # Initialize various logging parameters.
@@ -60,13 +67,20 @@ for _ in range(100):
     logging.debug("Processing data batch")
     data_filter.process_batch()
 
-# # Create the devices.
-# logging.debug("Creating the device drivers.")
-# i2c = board.I2C()
-# altimeter = BMP390(i2c)
-# imu = ICM20948(i2c)
+# Create the devices.
+logging.debug("Creating the device drivers.")
+i2c = board.I2C()
+altimeter = BMP390(i2c)
+imu = ICM20948(i2c)
 # servo = ServoMotor(board.D12)
-# logging.debug("The device drivers are up and running.")
+logging.debug("The device drivers are up and running.")
 
 # Zero the altimeter.
+logging.debug("Zeroing the altimeter.")
+try:
+    altimeter.zero()
+except Exception as e:
+    logging.exception("The altimeter failed to zero. This is fatal.")
+    exit(1)
+logging.debug(f"The altimeter is zeroed. Reading @ {altimeter.altitude()} feet.")
 
