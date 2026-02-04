@@ -53,5 +53,25 @@ class PI_Controller:
        self.previous_error = 0
        self.previous_time = 0
        self.previous_integral = 0
-       self.previous_control =0;
+       self.previous_control =0
 
+       self.first = True
+
+       def calculateActuation(self, setpoint, measurement, current_time, Kp, Ki):
+           
+            if State == State.PRELAUNCH or State == State.LAUNCHED:
+                return None
+            if State == State.OVERSHOOT:
+                return 45
+            if State == State.APOGEE:
+                return 0
+            
+            
+            kp_alt = 2e-3
+            ki_alt = 2e-4
+
+            kp_vel = 3e-3
+            ki_vel = 1e-4
+
+
+        alt_error = 
