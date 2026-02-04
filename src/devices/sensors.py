@@ -31,6 +31,11 @@ class BMP390:
             pressure_sum += self.altimeter.pressure
             time.sleep(wait)
         self.altimeter.sea_level_pressure = pressure_sum / n
+    
+    def log_pressure(self, wait=0.01):
+        while True:
+            print(hPa_to_psi(self.altimeter.pressure))
+            time.sleep(wait)
 
     def reset(self):
         self.altimeter.reset()

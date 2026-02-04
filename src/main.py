@@ -12,6 +12,7 @@ import time
 import os
 
 from devices.sensors import BMP390, ICM20948
+from devices.servo import ServoMotor
 
 # Output data constants.
 current_directory = os.getcwd()
@@ -61,24 +62,25 @@ writer.writerow(HEADERS)
 logging.debug(f"Output data file is open @ {OUTPUT_DATA_PATH}.")
 
 # Make the data filter.
-logging.debug("Initializing the data filter.")
-data_filter = DataFilter()
-for _ in range(100):
-    logging.debug("Processing data batch")
-    data_filter.process_batch()
+# logging.debug("Initializing the data filter.")
+# data_filter = DataFilter()
+# for _ in range(100):
+#     logging.debug("Processing data batch")
+#     data_filter.process_batch()
 
 # Create the devices.
 logging.debug("Creating the device drivers.")
 i2c = board.I2C()
 altimeter = BMP390(i2c)
 imu = ICM20948(i2c)
-# servo = ServoMotor(board.D12)
+servo = ServoMotor(board.D18)
 logging.debug("The device drivers are up and running.")
 
 # Zero the altimeter.
 logging.debug("Zeroing the altimeter.")
 try:
-    altimeter.zero()
+    # servo.show_pins()
+    servo.test_rotation()
 except Exception as e:
     logging.exception("The altimeter failed to zero. This is fatal.")
     exit(1)

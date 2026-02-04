@@ -1,6 +1,7 @@
 import logging
 import board 
 import pwmio
+import time
 
 class ServoMotor:
     ON = 2 ** 16
@@ -28,3 +29,22 @@ class ServoMotor:
         duty = (n + 45)/1800
         self.motor.duty_cycle = int(duty * ServoMotor.ON)
         self.last_angle = n
+        print(duty, ' ', self.motor.duty_cycle)
+
+    def test_rotation(self, delta = 1, wait = 1):
+        sum = 1
+        while True:
+            if sum == 45 or sum == 0:
+                delta *= -1
+            sum += delta
+            # print(sum)
+            self.rotate(sum)
+            time.sleep(wait)
+            
+        
+    def show_pins(self):
+        pins = dir(board)
+        for i in range(len(pins)):
+            print(pins[i])
+
+        

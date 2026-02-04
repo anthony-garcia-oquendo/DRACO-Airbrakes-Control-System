@@ -6,5 +6,5 @@ adafruit-circuitpython-icm20x
 adafruit-circuitpython-bmp3xx
 
 # Data Filter
-filterpy.kalman
+filterpy
 numpy 
