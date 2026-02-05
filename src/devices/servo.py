@@ -1,16 +1,20 @@
 import logging
 import board 
-import pwmio
-import time
+from gpiozero
+from time
 
 class ServoMotor:
-    ON = 2 ** 16
-    MOTOR_MIN = 0.5
-    MOTOR_MAX = 2.5
+    MIN_ANGLE = 0
+    MAX_ANGLE = 180
+    MIN_PULSE_WIDTH = 0.5/1000
+    MAX_PULSE_WIDTH = 2.5/1000
 
-    def __init__(self, pin, **kwargs):
-        self.motor = pwmio.PWMOut(pin, variable_frequency=False, **kwargs)
-        self.motor.frequency = 50
+    def __init__(self, pin):
+        self.motor = gpiozero.AngularServo(pin, 
+                                            min_angle=MIN_ANGLE, 
+                                            max_angle=MAX_ANGLE, 
+                                            min_pulse_width=MIN_PULSE_WIDTH, 
+                                            max_pulse_width=MAX_PULSE_WIDTH)
         self.last_angle = 0
 
     def rotate(self, n):
@@ -25,11 +29,9 @@ class ServoMotor:
             logging.warning(f"SERVO ERROR: unsafe actuation angle ({n}), stay in [0, 45].")
             return
 
-        logging.debug(f"Actuating servo motor to {n}% = {n} degrees.")
-        duty = (n + 45)/1800
-        self.motor.duty_cycle = int(duty * ServoMotor.ON)
+        logging.debug(f"Actuating servo motor to {n} degrees.")
+        self.motor.angle = n
         self.last_angle = n
-        print(duty, ' ', self.motor.duty_cycle)
 
     def test_rotation(self, delta = 1, wait = 1):
         sum = 1
@@ -42,7 +44,7 @@ class ServoMotor:
             time.sleep(wait)
             
         
-    def show_pins(self):
+    def show_board_pins(self):
         pins = dir(board)
         for i in range(len(pins)):
             print(pins[i])
