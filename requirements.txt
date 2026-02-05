@@ -1,6 +1,9 @@
 # Hardware abstraction (board, pwmio)
 adafruit-blinka
 
+# Servo
+python3-gpiozero
+
 # Sensors 
 adafruit-circuitpython-icm20x
 adafruit-circuitpython-bmp3xx
