@@ -41,6 +41,16 @@ static inline void write_le_i32(volatile uint8_t* p, int32_t v) {
 }
 
 // ---------- I2C callbacks ----------
+// helper: find first index whose t_ms >= target
+static size_t find_index_for_time(uint32_t target_ms) {
+  if (!samples || sample_count == 0) return 0;
+  // simple linear scan is fine for small files; upgrade to binary search if big
+  for (size_t i = 0; i < sample_count; i++) {
+    if (samples[i].t_ms >= target_ms) return i;
+  }
+  return sample_count - 1;
+}
+
 void onReceive(int len) {
   if (len <= 0) return;
 
@@ -48,17 +58,73 @@ void onReceive(int len) {
   reg_ptr = (uint8_t)Wire.read();
   len--;
 
-  // Optional control: write to 0x1F with 0/1 to stop/start
-  // Example from Pi: i2cset -y 1 0x28 0x1F 0x00
-  if (len >= 1) {
-    uint8_t v = (uint8_t)Wire.read();
-    if (reg_ptr == 0x1F) {
-      running = (v != 0);
-      if (running) {
-        playback_start_ms = millis();
-      }
-    }
+  // Only act on control register 0x1F
+  if (reg_ptr != 0x1F || len <= 0) {
+    // Drain any remaining bytes so Wire buffer stays clean
+    while (len-- > 0) (void)Wire.read();
+    return;
   }
+
+  uint8_t cmd = (uint8_t)Wire.read();
+  len--;
+
+  switch (cmd) {
+    case 0x00:  // STOP / PAUSE
+      running = false;
+      break;
+
+    case 0x01:  // START (sync): reset to beginning and start NOW
+      idx = 0;
+      playback_start_ms = millis();
+      running = true;
+      if (samples && sample_count > 0) publish_sample(samples[0]);
+      break;
+
+    case 0x02:  // RESET to beginning but stay paused
+      running = false;
+      idx = 0;
+      playback_start_ms = millis();
+      if (samples && sample_count > 0) publish_sample(samples[0]);
+      break;
+
+    case 0x03: { // SEEK: next 4 bytes = target t_ms (LE). Start running.
+      if (len < 4) break;
+      uint32_t t_ms = 0;
+      t_ms |= (uint32_t)Wire.read();
+      t_ms |= (uint32_t)Wire.read() << 8;
+      t_ms |= (uint32_t)Wire.read() << 16;
+      t_ms |= (uint32_t)Wire.read() << 24;
+      len -= 4;
+
+      idx = find_index_for_time(t_ms);
+      playback_start_ms = millis() - samples[idx].t_ms; // align elapsed so current sample matches target time
+      running = true;
+      publish_sample(samples[idx]);
+      break;
+    }
+
+    case 0x04: { // SYNC NOW: next 4 bytes = t0_ms (LE), define time zero.
+      // This is optional: lets Pi say "t=0 should be right now minus t0_ms".
+      if (len < 4) break;
+      uint32_t t0_ms = 0;
+      t0_ms |= (uint32_t)Wire.read();
+      t0_ms |= (uint32_t)Wire.read() << 8;
+      t0_ms |= (uint32_t)Wire.read() << 16;
+      t0_ms |= (uint32_t)Wire.read() << 24;
+      len -= 4;
+
+      // If Pi sends t0_ms=0, playback start = now (classic start alignment)
+      playback_start_ms = millis() - t0_ms;
+      break;
+    }
+
+    default:
+      // unknown command, ignore
+      break;
+  }
+
+  // Drain anything extra
+  while (len-- > 0) (void)Wire.read();
 }
 
 void onRequest() {

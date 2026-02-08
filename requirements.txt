@@ -4,9 +4,13 @@ adafruit-blinka
 # Servo
 gpiozero
 
+
+
 # Sensors 
 adafruit-circuitpython-icm20x
 adafruit-circuitpython-bmp3xx
+smbus2
+
 
 # Data Filter
 filterpy
