@@ -25,7 +25,7 @@ class BMP390:
         rho_kg_m3 = P_pascals / (R * T_kelvin) # kg/m^3
         return kg_m3_to_lbm_ft3(rho_kg_m3) # lbm/ft^3
 
-    def zero(self, n=100, wait=0.01):
+    def zero(self, n=100, wait=0.01): # check for correctness
         pressure_sum = 0
         for _ in range(n):
             pressure_sum += self.altimeter.pressure
