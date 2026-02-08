@@ -26,3 +26,6 @@ hitl_sim
 hitl_flight
 sitl_servo
 sitl_flight_servo_log.csv
+!docs/lookup_tables/**/*.csv
+!data/**/*.csv
+!data/**/*.log
