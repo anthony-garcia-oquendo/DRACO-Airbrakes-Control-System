@@ -69,25 +69,22 @@ void onRequest() {
 }
 
 // ---------- CSV parsing ----------
-static bool parse_csv_line(const String& line, Sample& out) {
-  // OpenRocket format (your file):
-  // time_s, altitude_m, altitude_asl_m, vertical_velocity_ftps, vertical_accel_ftps2
-  //
-  // Example row:
-  // 0.011,4.998e-4,4.998e-4,0.506,113.459
+static const float G_FTPS2 = 32.174f; // standard gravity in ft/s^2
+static const bool FLIP_Z = false;     // set true if your IMU Z axis is opposite
 
-  // Trim and skip empty/comment lines
+static bool parse_csv_line(const String& line, Sample& out) {
+  // Format:
+  // time_s, altitude_m, altitude_asl_m, vertical_velocity_ftps, vertical_accel_ftps2
+
   String s = line;
   s.trim();
   if (s.length() == 0) return false;
   if (s[0] == '#') return false;
 
-  // Copy into mutable buffer for strtok
   char buf[192];
   if (s.length() >= (int)sizeof(buf)) return false;
   s.toCharArray(buf, sizeof(buf));
 
-  // Tokenize by comma
   char* tok = strtok(buf, ",");
   if (!tok) return false; float t_s = atof(tok);
 
@@ -95,25 +92,33 @@ static bool parse_csv_line(const String& line, Sample& out) {
   if (!tok) return false; float alt_m = atof(tok);
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; /* float alt_asl_m = */ (void)atof(tok); // ignored
+  if (!tok) return false; (void)atof(tok); // alt_asl ignored
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; /* float v_ftps = */ (void)atof(tok);    // ignored
+  if (!tok) return false; (void)atof(tok); // v_ftps ignored
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; float a_ftps2 = atof(tok);
+  if (!tok) return false; float a_vert_ftps2 = atof(tok); // signed vertical accel
 
-  // Convert to fixed-point for I2C registers
+  // IMU-like proper acceleration on Z:
+  // - At rest: a_vert ~ 0, so az_imu ~ +g
+  // - Free-fall: a_vert ~ -g, so az_imu ~ 0
+  float az_imu = a_vert_ftps2 + G_FTPS2;
+
+  // If your IMU Z axis is mounted opposite (down-positive), flip:
+  if (FLIP_Z) az_imu = -az_imu;
+
   out.t_ms = (uint32_t)lroundf(t_s * 1000.0f);
   out.alt_m_x1000 = (int32_t)lroundf(alt_m * 1000.0f);
 
-  // Only vertical acceleration provided by OR export:
+  // Only Z provided (1D sim)
   out.ax_ftps2_x1000 = 0;
   out.ay_ftps2_x1000 = 0;
-  out.az_ftps2_x1000 = (int32_t)lroundf(a_ftps2 * 1000.0f);
+  out.az_ftps2_x1000 = (int32_t)lroundf(az_imu * 1000.0f);
 
   return true;
 }
+
 
 static bool load_csv(const char* path) {
   File f = SPIFFS.open(path, "r");
