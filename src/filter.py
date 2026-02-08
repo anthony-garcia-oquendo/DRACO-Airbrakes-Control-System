@@ -26,8 +26,10 @@ class DataFilter:
         self.filter.P *= 1
         self.filter.R *= 1
         self.filter.Q *= 1
-        self.filter.x = np.array([0, 0, 0])
-
+        self.filter.x = np.array([[0.0],
+                                  [0.0],
+                                  [0.0]])
+                               
     def _calculate_dt(self, in_time):
         if self._t_prev is None:
             self._dt = 0.1
@@ -35,8 +37,11 @@ class DataFilter:
             self._dt = in_time - self._t_prev
         self._t_prev = in_time
 
-    def _generate_phi(self):
-        self._calculate_dt(time.time())
+    def _generate_phi(self, dt = 0.01):
+        if dt is None:
+            self._calculate_dt(time.time())
+        else:
+            self._dt = dt
 
         dp = 1
         ds = 0
@@ -50,13 +55,14 @@ class DataFilter:
 
         return phi
 
-    def filter_data(self, altitude, acceleration):
+    def filter_data(self, altitude, acceleration, dt=0.5):
         measurements = [float(altitude), float(acceleration)]
 
         params = np.array(measurements)
-        self.filter.F = self._generate_phi()
-
+        self.filter.F = self._generate_phi(dt=dt)
         self.filter.predict()
         self.filter.update(params)
 
-        self.kalman_altitude, self.kalman_velocity, self.kalman_acceleration = self.filter.x
+        self.kalman_altitude     = float(self.filter.x[0, 0])
+        self.kalman_velocity     = float(self.filter.x[1, 0])
+        self.kalman_acceleration = float(self.filter.x[2, 0])
