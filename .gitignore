@@ -17,3 +17,6 @@ ENV/
 *.csv
 *.dat
 *.npz
+!docs/lookup_tables/**/*.csv
+!data/**/*.csv
+!data/**/*.log
