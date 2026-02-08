@@ -2,7 +2,7 @@
 adafruit-blinka
 
 # Servo
-python3-gpiozero
+gpiozero
 
 # Sensors 
 adafruit-circuitpython-icm20x
