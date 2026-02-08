@@ -70,40 +70,47 @@ void onRequest() {
 
 // ---------- CSV parsing ----------
 static bool parse_csv_line(const String& line, Sample& out) {
-  // Expect: t_s,alt_m,ax,ay,az
-  // Allow spaces.
+  // OpenRocket format (your file):
+  // time_s, altitude_m, altitude_asl_m, vertical_velocity_ftps, vertical_accel_ftps2
+  //
+  // Example row:
+  // 0.011,4.998e-4,4.998e-4,0.506,113.459
+
+  // Trim and skip empty/comment lines
+  String s = line;
+  s.trim();
+  if (s.length() == 0) return false;
+  if (s[0] == '#') return false;
+
+  // Copy into mutable buffer for strtok
   char buf[192];
-  size_t n = line.length();
-  if (n >= sizeof(buf)) return false;
-  line.toCharArray(buf, sizeof(buf));
+  if (s.length() >= (int)sizeof(buf)) return false;
+  s.toCharArray(buf, sizeof(buf));
 
-  // Skip empty/comment lines
-  char* s = buf;
-  while (*s == ' ' || *s == '\t') s++;
-  if (*s == '\0' || *s == '#') return false;
-
-  // Tokenize
-  char* tok = strtok(s, ",");
+  // Tokenize by comma
+  char* tok = strtok(buf, ",");
   if (!tok) return false; float t_s = atof(tok);
 
   tok = strtok(nullptr, ",");
   if (!tok) return false; float alt_m = atof(tok);
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; float ax = atof(tok);
+  if (!tok) return false; /* float alt_asl_m = */ (void)atof(tok); // ignored
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; float ay = atof(tok);
+  if (!tok) return false; /* float v_ftps = */ (void)atof(tok);    // ignored
 
   tok = strtok(nullptr, ",");
-  if (!tok) return false; float az = atof(tok);
+  if (!tok) return false; float a_ftps2 = atof(tok);
 
-  // Convert to fixed-point
+  // Convert to fixed-point for I2C registers
   out.t_ms = (uint32_t)lroundf(t_s * 1000.0f);
   out.alt_m_x1000 = (int32_t)lroundf(alt_m * 1000.0f);
-  out.ax_ftps2_x1000 = (int32_t)lroundf(ax * 1000.0f);
-  out.ay_ftps2_x1000 = (int32_t)lroundf(ay * 1000.0f);
-  out.az_ftps2_x1000 = (int32_t)lroundf(az * 1000.0f);
+
+  // Only vertical acceleration provided by OR export:
+  out.ax_ftps2_x1000 = 0;
+  out.ay_ftps2_x1000 = 0;
+  out.az_ftps2_x1000 = (int32_t)lroundf(a_ftps2 * 1000.0f);
 
   return true;
 }
