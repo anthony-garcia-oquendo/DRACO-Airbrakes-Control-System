@@ -72,6 +72,3 @@ class PI_Controller:
 
             kp_vel = 3e-3
             ki_vel = 1e-4
-
-
-        alt_error = 
