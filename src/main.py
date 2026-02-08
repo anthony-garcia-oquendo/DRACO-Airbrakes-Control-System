@@ -51,7 +51,7 @@ logging.basicConfig(filename=OUTPUT_LOG_PATH, level=logging.DEBUG, filemode="w",
 logging.getLogger().addHandler(logging.StreamHandler()) # send log messages to terminal
 
 # Jokes.
-logging.debug("Knock knock. Who's there? Draco not Notre")
+logging.debug("Knock knock. Who's there? Draco not Notre :)")
 logging.debug("ACS is the all-American air brake system ... not a metric unit in sight.")
 logging.debug("Disabling independent flap actuation to abide by federal missile laws.")
 
@@ -79,10 +79,29 @@ logging.debug("The device drivers are up and running.")
 # Zero the altimeter.
 logging.debug("Zeroing the altimeter.")
 try:
-    # servo.show_pins()
-    servo.test_rotation()
+    # altimeter.zero()
 except Exception as e:
     logging.exception("The altimeter failed to zero. This is fatal.")
     exit(1)
 logging.debug(f"The altimeter is zeroed. Reading @ {altimeter.altitude()} feet.")
 
+# Run the actuation sequence.
+logging.debug("Beginning the initial actuation sequence.")
+servo.rotate(0)
+time.sleep(2)
+servo.rotate(45)
+time.sleep(2)
+servo.rotate(0)
+logging.debug("Initial actuation sequence complete.")
+
+logging.debug("Initializing the actuator.")
+# actuator = ActuationController()
+logging.debug("The actuator is initialized.")
+
+logging.debug("The launch vehicle is currently on the ground.")
+state = State.PRELAUNCH
+
+start = time.time()
+logging.debug(f"Start time (Unix epoch): {start}.")
+
+logging.debug("Beginning the ACS control loop.")
