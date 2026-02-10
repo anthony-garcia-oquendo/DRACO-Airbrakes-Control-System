@@ -1,7 +1,7 @@
 import logging
 import board 
-from gpiozero
-from time
+import gpiozero
+import time
 
 class ServoMotor:
     MIN_ANGLE = 0
