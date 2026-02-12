@@ -1,0 +1,6 @@
+DEBUG:root:Knock knock. Who's there? Draco not Notre
+DEBUG:root:ACS is the all-American air brake system ... not a metric unit in sight.
+DEBUG:root:Disabling independent flap actuation to abide by federal missile laws.
+DEBUG:root:Opening output data file @ ./data/20260127_Test1/data_20260128_01:15:31.csv.
+DEBUG:root:Output data file is open @ ./data/20260127_Test1/data_20260128_01:15:31.csv.
+DEBUG:root:Initializing the data filter.
