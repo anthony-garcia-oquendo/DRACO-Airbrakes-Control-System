@@ -3,6 +3,8 @@ adafruit-blinka
 
 # Servo
 gpiozero
+adafruit-circuitpython-pca9685
+adafruit-circuitpython-servokit
 
 # Sensors 
 adafruit-circuitpython-icm20x
