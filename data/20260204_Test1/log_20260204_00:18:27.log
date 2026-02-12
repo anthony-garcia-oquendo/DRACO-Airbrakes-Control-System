@@ -1,0 +1,41 @@
+DEBUG:root:Knock knock. Who's there? Draco not Notre
+DEBUG:root:ACS is the all-American air brake system ... not a metric unit in sight.
+DEBUG:root:Disabling independent flap actuation to abide by federal missile laws.
+DEBUG:root:Opening output data file @ //home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260204_Test1/data_20260204_00:18:27.csv.
+DEBUG:root:Output data file is open @ //home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260204_Test1/data_20260204_00:18:27.csv.
+DEBUG:root:Creating the device drivers.
+DEBUG:root:The device drivers are up and running.
+DEBUG:root:Zeroing the altimeter.
+DEBUG:root:Actuating servo motor to 2.0% = 2.0 degrees.
+DEBUG:root:Actuating servo motor to 3.0% = 3.0 degrees.
+DEBUG:root:Actuating servo motor to 4.0% = 4.0 degrees.
+DEBUG:root:Actuating servo motor to 5.0% = 5.0 degrees.
+DEBUG:root:Actuating servo motor to 6.0% = 6.0 degrees.
+DEBUG:root:Actuating servo motor to 7.0% = 7.0 degrees.
+DEBUG:root:Actuating servo motor to 8.0% = 8.0 degrees.
+DEBUG:root:Actuating servo motor to 9.0% = 9.0 degrees.
+DEBUG:root:Actuating servo motor to 10.0% = 10.0 degrees.
+DEBUG:root:Actuating servo motor to 11.0% = 11.0 degrees.
+DEBUG:root:Actuating servo motor to 12.0% = 12.0 degrees.
+DEBUG:root:Actuating servo motor to 13.0% = 13.0 degrees.
+DEBUG:root:Actuating servo motor to 14.0% = 14.0 degrees.
+DEBUG:root:Actuating servo motor to 15.0% = 15.0 degrees.
+DEBUG:root:Actuating servo motor to 16.0% = 16.0 degrees.
+DEBUG:root:Actuating servo motor to 17.0% = 17.0 degrees.
+DEBUG:root:Actuating servo motor to 18.0% = 18.0 degrees.
+DEBUG:root:Actuating servo motor to 19.0% = 19.0 degrees.
+DEBUG:root:Actuating servo motor to 20.0% = 20.0 degrees.
+DEBUG:root:Actuating servo motor to 21.0% = 21.0 degrees.
+DEBUG:root:Actuating servo motor to 22.0% = 22.0 degrees.
+DEBUG:root:Actuating servo motor to 23.0% = 23.0 degrees.
+DEBUG:root:Actuating servo motor to 24.0% = 24.0 degrees.
+DEBUG:root:Actuating servo motor to 25.0% = 25.0 degrees.
+DEBUG:root:Actuating servo motor to 26.0% = 26.0 degrees.
+DEBUG:root:Actuating servo motor to 27.0% = 27.0 degrees.
+DEBUG:root:Actuating servo motor to 28.0% = 28.0 degrees.
+DEBUG:root:Actuating servo motor to 29.0% = 29.0 degrees.
+DEBUG:root:Actuating servo motor to 30.0% = 30.0 degrees.
+DEBUG:root:Actuating servo motor to 31.0% = 31.0 degrees.
+DEBUG:root:Actuating servo motor to 32.0% = 32.0 degrees.
+DEBUG:root:Actuating servo motor to 33.0% = 33.0 degrees.
+DEBUG:root:Actuating servo motor to 34.0% = 34.0 degrees.

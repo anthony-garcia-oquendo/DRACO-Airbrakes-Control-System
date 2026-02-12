@@ -1,0 +1,16 @@
+DEBUG:root:Knock knock. Who's there? Draco not Notre
+DEBUG:root:ACS is the all-American air brake system ... not a metric unit in sight.
+DEBUG:root:Disabling independent flap actuation to abide by federal missile laws.
+DEBUG:root:Opening output data file @ //home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260203_Test1/data_20260203_23:11:27.csv.
+DEBUG:root:Output data file is open @ //home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260203_Test1/data_20260203_23:11:27.csv.
+DEBUG:root:Creating the device drivers.
+DEBUG:root:The device drivers are up and running.
+DEBUG:root:Zeroing the altimeter.
+ERROR:root:The altimeter failed to zero. This is fatal.
+Traceback (most recent call last):
+  File "/home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/src/main.py", line 82, in <module>
+    servo.test_rotation()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/src/devices/servo.py", line 38, in test_rotation
+    sum += delta
+TypeError: unsupported operand type(s) for +=: 'int' and 'ServoMotor'
