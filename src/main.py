@@ -18,7 +18,7 @@ from devices.servo import ServoMotor
 current_directory = os.getcwd()
 date = datetime.now().strftime("%Y%m%d")
 launch = "Test1"
-OUTPUT_DIRECTORY = f"/{current_directory}/data/{date}_{launch}"
+OUTPUT_DIRECTORY = os.path.join(current_directory, "data", f"{date}_{launch}")
 os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
 HEADERS = [
@@ -105,3 +105,111 @@ start = time.time()
 logging.debug(f"Start time (Unix epoch): {start}.")
 
 logging.debug("Beginning the ACS control loop.")
+while True:
+    try:
+        # Read current time.
+        time_current = time.time() - start
+
+         # Read BMP390 sensor.
+        try:
+            altitude = altimeter.altitude()
+            temperature = altimeter.temperature()
+            pressure = altimeter.pressure()
+            air_density = altimeter.air_density()
+        except Exception as e:
+            logging.exception(f"Error reading the BMP390 altimeter: {e}.")
+            logging.info(f"BMP390 last altitude: {altitude}.")
+            logging.info(f"BMP390 last temperature: {temperature}.")
+            logging.info(f"BMP390 last pressure: {pressure}.")
+            logging.info(f"BMP390 last air density: {air_density}.")
+            continue
+
+        # Read ICM20948 sensor.
+        try:
+            acceleration = imu.acceleration()
+            acceleration_x = acceleration[0]
+            acceleration_y = acceleration[1]
+            acceleration_z = acceleration[2] - 32.15
+            magnetic = imu.magnetic()
+            magnetic_x = magnetic[0]
+            magnetic_y = magnetic[1]
+            magnetic_z = magnetic[2]
+            gyro = imu.gyro()
+            gyro_x = gyro[0]
+            gyro_y = gyro[1]
+            gyro_z = gyro[2]
+        except Exception as e:
+            logging.exception(f"Error reading the BNO055 inertial measurement unit: {e}.")
+            logging.info(f"BNO055 last acceleration: ({acceleration_x}, {acceleration_y}, {acceleration_z}).")
+            logging.info(f"BNO055 last magnetic: ({magnetic_x}, {magnetic_y}, {magnetic_z}).")
+            logging.info(f"BNO055 last gyro: ({gyro_x}, {gyro_y}, {gyro_z}).")
+            continue
+
+        # Filter the data.
+        try:
+            data_filter.filter_data(altitude, acceleration_z)
+            altitude_filtered = data_filter.kalman_altitude
+            velocity_filtered = data_filter.kalman_velocity
+            acceleration_filtered = data_filter.kalman_acceleration
+        except Exception as e:
+            logging.exception(f"Error filtering the data: {e}.")
+            logging.info(f"Filter last altitude: {altitude_filtered}.")
+            logging.info(f"Filter last acceleration: {acceleration_filtered}.")
+            logging.info(f"Filter last velocity: {velocity_filtered}.")
+            continue
+
+
+        # Determine the state of the ACS.
+        try:
+            state = determine_state(state, altitude_filtered, velocity_filtered, acceleration_filtered)
+        except Exception as e:
+            logging.exception(f"Error within state determination: {e}.")
+            logging.info(f"Determinator last state: {state}.")
+            continue
+
+        # Determine the current flap angle.
+        flap_angle = servo.last_flap_angle
+
+        # Log the data
+        writer.writerow([
+            time_current,
+            state,
+            flap_angle,
+            actuator.apogee_prediction,
+            altitude_filtered,
+            velocity_filtered,
+            acceleration_filtered,
+            altitude,
+            acceleration_x,
+            acceleration_y,
+            acceleration_z,
+            magnetic_x,
+            magnetic_y,
+            magnetic_z,
+            gyro_x,
+            gyro_y,
+            gyro_z,
+            temperature,
+            pressure,
+            air_density
+        ])
+
+        # # Run actuation control algorithm.
+        # try:
+        #     actuation_degree = actuator.calculate_actuation(
+        #         time_current,
+        #         state,
+        #         flap_angle,
+        #         altitude_filtered,
+        #         velocity_filtered
+        #     )
+        #     if actuation_degree is not None:
+        #         flap_angle_new = servo_percentage_to_flap_angle(actuation_degree)
+        #         servo.rotate(flap_angle_new)
+        # except Exception as e:
+        #     logging.exception(f"Error within actuation control: {e}.")
+    except KeyboardInterrupt:
+        logging.warning("Keyboard interrupt detected; exiting gracefully.")
+        break
+    except BaseException as e:
+        logging.error(f"BaseException caught (this is bad): {e}")
