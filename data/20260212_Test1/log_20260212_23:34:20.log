@@ -1,0 +1,373 @@
+DEBUG:root:Knock knock. Who's there? Draco not Notre :)
+DEBUG:root:ACS is the all-American air brake system ... not a metric unit in sight.
+DEBUG:root:Disabling independent flap actuation to abide by federal missile laws.
+DEBUG:root:Opening output data file @ /home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260212_Test1/data_20260212_23:34:20.csv.
+DEBUG:root:Output data file is open @ /home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260212_Test1/data_20260212_23:34:20.csv.
+DEBUG:root:Initializing the data filter.
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Creating the device drivers.
+DEBUG:root:The device drivers are up and running.
+DEBUG:root:Zeroing the altimeter.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (46.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 41.0 degrees -> servo 19.32 degrees.
+DEBUG:root:Actuating: flap 36.0 degrees -> servo 17.08 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+WARNING:root:SERVO ERROR: unsafe actuation angle (-4.0), stay in [0.0, 45.0].
+DEBUG:root:Actuating: flap 1.0 degrees -> servo 0.47 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
