@@ -1,0 +1,141 @@
+DEBUG:root:Knock knock. Who's there? Draco not Notre :)
+DEBUG:root:ACS is the all-American air brake system ... not a metric unit in sight.
+DEBUG:root:Disabling independent flap actuation to abide by federal missile laws.
+DEBUG:root:Opening output data file @ /home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260212_Test1/data_20260212_23:31:40.csv.
+DEBUG:root:Output data file is open @ /home/dracoairbrakes/Documents/DRACO-Airbrakes-Control-System/data/20260212_Test1/data_20260212_23:31:40.csv.
+DEBUG:root:Initializing the data filter.
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Processing data batch
+DEBUG:root:Creating the device drivers.
+DEBUG:root:The device drivers are up and running.
+DEBUG:root:Zeroing the altimeter.
+DEBUG:root:Actuating: flap 2.0 degrees -> servo 0.94 degrees.
+DEBUG:root:Actuating: flap 3.0 degrees -> servo 1.41 degrees.
+DEBUG:root:Actuating: flap 4.0 degrees -> servo 1.88 degrees.
+DEBUG:root:Actuating: flap 5.0 degrees -> servo 2.35 degrees.
+DEBUG:root:Actuating: flap 6.0 degrees -> servo 2.83 degrees.
+DEBUG:root:Actuating: flap 7.0 degrees -> servo 3.29 degrees.
+DEBUG:root:Actuating: flap 8.0 degrees -> servo 3.77 degrees.
+DEBUG:root:Actuating: flap 9.0 degrees -> servo 4.25 degrees.
+DEBUG:root:Actuating: flap 10.0 degrees -> servo 4.73 degrees.
+DEBUG:root:Actuating: flap 11.0 degrees -> servo 5.21 degrees.
+DEBUG:root:Actuating: flap 12.0 degrees -> servo 5.69 degrees.
+DEBUG:root:Actuating: flap 13.0 degrees -> servo 6.17 degrees.
+DEBUG:root:Actuating: flap 14.0 degrees -> servo 6.65 degrees.
+DEBUG:root:Actuating: flap 15.0 degrees -> servo 7.13 degrees.
+DEBUG:root:Actuating: flap 16.0 degrees -> servo 7.61 degrees.
+DEBUG:root:Actuating: flap 17.0 degrees -> servo 8.10 degrees.
+DEBUG:root:Actuating: flap 18.0 degrees -> servo 8.58 degrees.
+DEBUG:root:Actuating: flap 19.0 degrees -> servo 9.06 degrees.
+DEBUG:root:Actuating: flap 20.0 degrees -> servo 9.54 degrees.
+DEBUG:root:Actuating: flap 21.0 degrees -> servo 10.02 degrees.
+DEBUG:root:Actuating: flap 22.0 degrees -> servo 10.50 degrees.
+DEBUG:root:Actuating: flap 23.0 degrees -> servo 10.98 degrees.
+DEBUG:root:Actuating: flap 24.0 degrees -> servo 11.46 degrees.
+DEBUG:root:Actuating: flap 25.0 degrees -> servo 11.94 degrees.
+DEBUG:root:Actuating: flap 26.0 degrees -> servo 12.41 degrees.
+DEBUG:root:Actuating: flap 27.0 degrees -> servo 12.89 degrees.
+DEBUG:root:Actuating: flap 28.0 degrees -> servo 13.36 degrees.
+DEBUG:root:Actuating: flap 29.0 degrees -> servo 13.83 degrees.
+DEBUG:root:Actuating: flap 30.0 degrees -> servo 14.30 degrees.
+DEBUG:root:Actuating: flap 31.0 degrees -> servo 14.77 degrees.
+DEBUG:root:Actuating: flap 32.0 degrees -> servo 15.24 degrees.
+DEBUG:root:Actuating: flap 33.0 degrees -> servo 15.70 degrees.

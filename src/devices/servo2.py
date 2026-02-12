@@ -33,7 +33,7 @@ class ServoMotor:
         self.last_flap_angle = 0
 
         if flap2servo_path is None:
-            flap2servo_path = os.path.join(os.getcwd(), "docs", "flap2servo.csv")
+            flap2servo_path = os.path.join(os.getcwd(), "docs", "lookup_tables", "flap2servo.csv")
         self.flap2servo_path = flap2servo_path
         
         # self.motor = gpiozero.AngularServo(
@@ -70,13 +70,13 @@ class ServoMotor:
         # pulse = pulse_min + (n_servo/180) * (pulse_max - pulse_min)
         # duty = int((pulse / 20000) * 65535)  # Convert pulse width to duty cycle (20ms period)
         # self.servo.duty_cycle = duty
-        kit.servo[0].angle =  n_servo
+        ServoMotor.kit.servo[0].angle =  n_servo
         self.last_flap_angle = n
 
     def test_rotation(self, delta = 1, wait = 1):
         sum = 1
         while True:
-            if sum == self.FLAP_MAX or sum == self.FLAP_MIN:
+            if sum >= self.FLAP_MAX or sum <= self.FLAP_MIN:
                 delta *= -1
             sum += delta
             # print(sum)
