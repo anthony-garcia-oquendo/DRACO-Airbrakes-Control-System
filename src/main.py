@@ -46,7 +46,7 @@ HEADERS = [
 ]
 
 # Initialize various logging parameters.
-now = datetime.now().strftime("%Y%m%d_%H:%M:%S")
+now = datetime.now().strftime("%Y%m%d_%H-%M-%S")
 OUTPUT_DATA_PATH = f"{OUTPUT_DIRECTORY}/data_{now}.csv"
 OUTPUT_LOG_PATH = f"{OUTPUT_DIRECTORY}/log_{now}.log"
 logging.basicConfig(filename=OUTPUT_LOG_PATH, level=logging.DEBUG, filemode="w", force=True)
@@ -68,7 +68,7 @@ logging.debug("Initializing the data filter.")
 data_filter = DataFilter()
 for _ in range(100):
     logging.debug("Processing data batch")
-    # data_filter.filter_data()
+    data_filter.filter_data(0,0)
 
 # Create the devices.
 logging.debug("Creating the device drivers.")
@@ -82,7 +82,7 @@ logging.debug("The device drivers are up and running.")
 logging.debug("Zeroing the altimeter.")
 try:
     # altimeter.zero()
-    servo.test_rotation(5, 0.5)
+    servo.test_rotation(10, 0.5)
 except Exception as e:
     logging.exception("The altimeter failed to zero. This is fatal.")
     exit(1)
