@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-// ENVIRONMENTAL CONSTANTS
+// ENVIRONMENTAL CONSTANTS - CHANGE AT LAUNCH SITE
 const double GROUND_TEMPERATURE_C = 15;   // °C
 const double GROUND_PRESSURE_PA = 101325.0; // HPA (~1013 mb)
 const double GRAVITY = 9.80665;             // m/s²
