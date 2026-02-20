@@ -12,6 +12,8 @@
 
 // TARGET APOGEE (in meters)
 const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
+
+// TAKEN FROM LATEST OPENROCKET SIMULATION BEST CASE (2026-01-30)
 const double BURNOUT_ALTITUDE = 275.877; // Altitude at motor burnout in meters
 const double BURNOUT_VELOCITY = 186.717; // Velocity at motor burnout in m/s
 
