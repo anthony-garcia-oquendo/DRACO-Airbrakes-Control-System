@@ -10,7 +10,7 @@
 #include "physics_engine.h"
 #include "pid_controller.h"
 
-// TARGET APOGEE (in meters)
+// TARGET APOGEE (in meters) - This was the target discussed in the latest report, based on the best case from OpenRocket simulations. 
 const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
 
 // TAKEN FROM LATEST OPENROCKET SIMULATION BEST CASE (2026-01-30)
