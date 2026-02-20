@@ -1,3 +1,5 @@
 flight_plot.png
 sitl_flight_log.csv
 build/
+sitl_sim
+hitl_sim
