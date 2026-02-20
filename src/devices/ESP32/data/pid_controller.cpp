@@ -41,7 +41,7 @@ double calculate_control_effort(double current_alt, double current_vel, double t
 }
 
 double slew_rate_limiter(double target_angle, double current_angle, double dt) {
-    double max_change = MAX_FLAP_SPEED_DEG_PER_SEC * dt;
+    double max_change = MAX_SERVO_DEG_PER_SEC * dt;
     double diff = target_angle - current_angle;
     
     // Limit the change

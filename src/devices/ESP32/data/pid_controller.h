@@ -8,7 +8,7 @@ struct PIDState {
 };
 
 // Slew rate limits
-const double MAX_FLAP_SPEED_DEG_PER_SEC = 285.71; 
+const double MAX_SERVO_DEG_PER_SEC = 285.71; // Servo max speed @ 7.4v
 
 // Function Prototypes
 double calculate_control_effort(double current_alt, double current_vel, double target_apogee, double dt, PIDState &state);

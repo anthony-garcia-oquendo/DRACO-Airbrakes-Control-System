@@ -220,7 +220,7 @@ int main() {
     double dt = 0.05;            // Loop frequency (20Hz)
     
     // Servo limits
-    const double MAX_FLAP_SPEED_DEG_PER_SEC = 285.71; 
+    const double MAX_SERVO_DEG_PER_SEC = 285.71; 
     
     PIDState airbrake_pid;
     
@@ -272,7 +272,7 @@ int main() {
         desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
 
         // 5. Hardware Actuation: Move physical flaps (Slew Rate)
-        double max_change = MAX_FLAP_SPEED_DEG_PER_SEC * dt;
+        double max_change = MAX_SERVO_DEG_PER_SEC * dt;
         double diff = desired_flap_angle - actual_flap_angle;
         actual_flap_angle += std::max(-max_change, std::min(max_change, diff));
         actual_flap_angle = std::max(0.0, std::min(45.0, actual_flap_angle));
