@@ -6,6 +6,7 @@
 // Environmental Constants
 extern const double GRAVITY;
 extern const double VEHICLE_MASS;
+extern const double PREDICTION_FREQUENCY;
 
 // Core Physics Functions
 double calculate_drag(double flap_angle, double altitude, double velocity);

@@ -10,6 +10,7 @@ const double GRAVITY = 9.80665;             // m/s²
 const double R_AIR = 287.058;               // J/(kg·K)
 const double LAPSE_RATE = 0.0065;           // °C per meter
 const double VEHICLE_MASS = 21.912; // kg at BURNOUT
+const double PREDICTION_FREQUENCY = 50.0; // Hz for RK4 integration
 
 // Rows: Flap Angles (0, 7.5, 15, 22.5, 30, 37.5, 45)
 // Cols: Mach Numbers (0.0, 0.18, 0.36, 0.54)
@@ -99,7 +100,7 @@ double calculate_drag(double flap_angle, double altitude, double velocity) {
 }
 
 double predict_apogee(double flap_angle, double altitude, double velocity){
-    double dt = 0.01;
+    double dt = 1.0 / PREDICTION_FREQUENCY; // 50 Hz prediction loop
     double weight = 1.0 / 6.0;
     double apogee_prediction = altitude;
     double velocity_current = velocity;
