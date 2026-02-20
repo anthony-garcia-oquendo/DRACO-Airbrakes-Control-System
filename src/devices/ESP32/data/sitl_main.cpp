@@ -10,6 +10,13 @@
 #include "physics_engine.h"
 #include "pid_controller.h"
 
+// TARGET APOGEE (in meters)
+const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
+const double BURNOUT_ALTITUDE = 275.877; // Altitude at motor burnout in meters
+const double BURNOUT_VELOCITY = 186.717; // Velocity at motor burnout in m/s
+
+
+
 // Mapping from Flap Degree (Index 0-45) to Servo Rotation Degree
 const double CAM_SERVO_TABLE[46] = {
     0.00, 0.47, 0.94, 1.41, 1.88, 2.35, 2.83, 3.29, 3.77, 4.25,
@@ -46,9 +53,9 @@ int main() {
     std::srand(std::time(0)); 
 
     // --- Initial Conditions (Burnout State) ---
-    double altitude = 275.877;     
-    double velocity = 186.717;     
-    double target_apogee = 1341.12; 
+    double altitude = BURNOUT_ALTITUDE;     
+    double velocity = BURNOUT_VELOCITY;     
+    double target_apogee = TARGET_APOGEE;
     double dt = 0.05; // 20Hz Loop
     
     PIDState airbrake_pid;
@@ -113,6 +120,10 @@ int main() {
         double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
         drag_force *= noise_factor;
 
+        // Introduce bias to test robustness (e.g., miscalibrated drag coefficient). Default is 1.0 (no bias).
+        drag_force *= 1.00;
+
+        // Update physics
         double acceleration = -GRAVITY - (drag_force / VEHICLE_MASS);
         velocity += acceleration * dt;
         altitude += velocity * dt;
