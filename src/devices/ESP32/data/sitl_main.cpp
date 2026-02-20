@@ -4,6 +4,8 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 #include "physics_engine.h"
 #include "pid_controller.h"
@@ -29,6 +31,8 @@ double get_servo_angle_from_cam(double flap_angle) {
 }
 
 int main() {
+    std::srand(std::time(0)); // Seed random number generator
+
     // --- Initial Conditions ---
     double altitude = 275.877;     
     double velocity = 186.717;     
@@ -83,6 +87,12 @@ int main() {
 
         // Physics Integration
         double drag_force = calculate_drag(actual_flap_angle, altitude, velocity);
+
+        // Add random noise to simulate real-world sensor/actuator imperfections
+        double noise_intensity = 0.02; // +-% noise
+        double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
+        drag_force *= noise_factor;
+
         double acceleration = -GRAVITY - (drag_force / VEHICLE_MASS);
 
         velocity += acceleration * dt;
