@@ -12,7 +12,7 @@ const double GROUND_PRESSURE_PA = 101325.0; // HPA (~1013 mb)
 const double GRAVITY = 9.80665;             // m/s²
 const double R_AIR = 287.058;               // J/(kg·K)
 const double LAPSE_RATE = 0.0065;           // °C per meter
-const double VEHICLE_MASS = 24.42; // kg
+const double VEHICLE_MASS = 21.912; // kg at BURNOUT
 
 // Rows: Flap Angles (0, 7.5, 15, 22.5, 30, 37.5, 45)
 // Cols: Mach Numbers (0.0, 0.18, 0.36, 0.54)
@@ -156,9 +156,9 @@ struct PIDState {
 };
 
 // Global PID Constants - These will need "Tuning"
-const double Kp = 0.55;  // Adjusts how aggressively we react to error
-const double Ki = 0.125;  // Corrects steady-state offset over time
-const double Kd = 0.12;  // Prevents jitter and over-correction
+const double Kp = 0.408;  // Adjusts how aggressively we react to error
+const double Ki = 0.127;  // Corrects steady-state offset over time
+const double Kd = 0.11;  // Prevents jitter and over-correction
 
 double calculate_control_effort(double current_alt, double current_vel, double target_apogee, double dt, PIDState &state) {
     
@@ -220,7 +220,7 @@ int main() {
     double dt = 0.05;            // Loop frequency (20Hz)
     
     // Servo limits
-    const double MAX_FLAP_SPEED_DEG_PER_SEC = 400.0; 
+    const double MAX_FLAP_SPEED_DEG_PER_SEC = 285.71; 
     
     PIDState airbrake_pid;
     
