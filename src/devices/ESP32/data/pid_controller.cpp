@@ -4,7 +4,7 @@
 #include <cmath>
 
 // Global PID Constants
-const double Kp = 0.408;
+const double Kp = 0.397;
 const double Ki = 0.127;
 const double Kd = 0.11;
 

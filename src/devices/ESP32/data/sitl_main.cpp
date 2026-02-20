@@ -11,8 +11,6 @@
 #include "pid_controller.h"
 
 // Mapping from Flap Degree (Index 0-45) to Servo Rotation Degree
-// Note: This table is here for simulation visualization/logging purposes
-// In HITL, this would drive the actual servo.
 const double CAM_SERVO_TABLE[46] = {
     0.00, 0.47, 0.94, 1.41, 1.88, 2.35, 2.83, 3.29, 3.77, 4.25,
     4.73, 5.21, 5.69, 6.17, 6.65, 7.13, 7.61, 8.10, 8.58, 9.06,
@@ -21,6 +19,7 @@ const double CAM_SERVO_TABLE[46] = {
     18.88, 19.32, 19.75, 20.19, 20.62, 21.04
 };
 
+// Forward Mapping: Flap -> Servo
 double get_servo_angle_from_cam(double flap_angle) {
     flap_angle = std::max(0.0, std::min(45.0, flap_angle));
     int i = static_cast<int>(flap_angle);
@@ -30,20 +29,33 @@ double get_servo_angle_from_cam(double flap_angle) {
     return CAM_SERVO_TABLE[i] * (1.0 - weight) + CAM_SERVO_TABLE[i+1] * weight;
 }
 
-int main() {
-    std::srand(std::time(0)); // Seed random number generator
+// Inverse Mapping: Servo -> Flap (Linear interpolation search)
+double get_flap_angle_from_servo(double servo_angle) {
+    servo_angle = std::max(0.0, std::min(21.04, servo_angle));
+    for (int i = 0; i < 45; ++i) {
+        if (servo_angle >= CAM_SERVO_TABLE[i] && servo_angle <= CAM_SERVO_TABLE[i+1]) {
+            double range = CAM_SERVO_TABLE[i+1] - CAM_SERVO_TABLE[i];
+            double weight = (servo_angle - CAM_SERVO_TABLE[i]) / range;
+            return static_cast<double>(i) + weight;
+        }
+    }
+    return 45.0;
+}
 
-    // --- Initial Conditions ---
+int main() {
+    std::srand(std::time(0)); 
+
+    // --- Initial Conditions (Burnout State) ---
     double altitude = 275.877;     
     double velocity = 186.717;     
     double target_apogee = 1341.12; 
-    double dt = 0.05; // 20Hz
+    double dt = 0.05; // 20Hz Loop
     
     PIDState airbrake_pid;
     
-    // State variables
+    // Physical State of Hardware
+    double actual_servo_angle = 0.0;
     double actual_flap_angle = 0.0;
-    double desired_flap_angle = 0.0;
 
     // --- 1. Open CSV ---
     std::ofstream log_file("sitl_flight_log.csv");
@@ -52,66 +64,70 @@ int main() {
         return 1;
     }
 
-    log_file << "Time(s),Alt(m),Vel(m/s),Unbraked_Pred(m),PID_Wants(deg),Actual_Flap(deg),Servo_Cmd(deg)\n";
+    log_file << "Time(s),Alt(m),Vel(m/s),Unbraked_Pred(m),PID_Wants(deg),Actual_Flap(deg),Actual_Servo(deg)\n";
     
     log_file << std::fixed << std::setprecision(3);
     std::cout << std::fixed << std::setprecision(2);
-    std::cout << "Starting SITL simulation...\n";
+    std::cout << "Starting SITL simulation (Servo-Limited Logic)...\n";
 
     // --- 2. Simulation Loop ---
     for (double t = 0; t < 20.0; t += dt) {
         
-        // Log Data (Hardware Output calculation for log)
+        // A. Prediction (What we think will happen if we do nothing)
         double unbraked_pred = predict_apogee(0.0, altitude, velocity);
-        double servo_cmd_angle = get_servo_angle_from_cam(actual_flap_angle);
 
+        // B. Controller Logic (Decision)
+        double desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
+
+        // C. Hardware Mapping (Decision -> Motor Command)
+        double desired_servo_angle = get_servo_angle_from_cam(desired_flap_angle);
+
+        // D. Hardware Actuation (Slew Rate Limit applied to the MOTOR)
+        // Servo speed is roughly 285 deg/s
+        actual_servo_angle = slew_rate_limiter(desired_servo_angle, actual_servo_angle, dt);
+
+        // E. Mechanical Feedback (Motor Pos -> Flap Pos)
+        actual_flap_angle = get_flap_angle_from_servo(actual_servo_angle);
+
+        // Log state BEFORE physics integration
         log_file << t << "," 
                  << altitude << "," 
                  << velocity << "," 
                  << unbraked_pred << "," 
                  << desired_flap_angle << "," 
                  << actual_flap_angle << "," 
-                 << servo_cmd_angle << "\n";
+                 << actual_servo_angle << "\n";
 
         if (std::fmod(t, 0.5) < dt) { 
-            std::cout << "T: " << t << "s | Alt: " << altitude << "m | Vel: " << velocity << "m/s | Pred: " << unbraked_pred << "m\n";
+            std::cout << "T: " << t << "s | Alt: " << altitude << "m | Pred: " << unbraked_pred 
+                      << "m | Flap: " << actual_flap_angle << " deg\n";
         }
 
-        if (velocity <= 0) break;
+        if (velocity <= 0) break; // Apogee reached
 
-        // Controller
-        desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
-
-        // Hardware Actuation (Slew Rate Limiting)
-        actual_flap_angle = slew_rate_limiter(desired_flap_angle, actual_flap_angle, dt);
-
-        // Physics Integration
+        // F. Physics Integration
         double drag_force = calculate_drag(actual_flap_angle, altitude, velocity);
 
-        // Add random noise to simulate real-world sensor/actuator imperfections
-        double noise_intensity = 0.02; // +-% noise
+        //Noise Stress Test to simulate real-world variability (e.g., wind gusts, sensor noise)
+        double noise_intensity = 0.5; // Set to 0 for no noise, increase for more variability 
         double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
         drag_force *= noise_factor;
 
         double acceleration = -GRAVITY - (drag_force / VEHICLE_MASS);
-
         velocity += acceleration * dt;
         altitude += velocity * dt;
     }
 
     log_file.close();
     
-    double error = (target_apogee - altitude);
-    std::cout << "--- FINAL APOGEE: " << altitude << " m ---\n";
-    std::cout << "Target: " << target_apogee << " m | Error: " << error << " m\n" << "Percentage Error: " << (error / target_apogee) * 100 << " %\n";
+    double error = (altitude - target_apogee);
+    std::cout << "\n--- FINAL APOGEE: " << altitude << " m ---\n";
+    std::cout << "Target: " << target_apogee << " m | Error: " << error << " m\n";
+    std::cout << "Percentage Error: " << (error / target_apogee) * 100 << " %\n";
 
     // --- 3. Run Plot Script ---
     std::cout << "Running plot_log.py...\n";
-    int result = system("python3 plot_log.py");
-    if (result != 0) {
-         // Fallback if python3 is not found or fails
-         system("source .venv/bin/activate && python plot_log.py");
-    }
+    system("python3 plot_log.py");
 
     return 0;
 }
