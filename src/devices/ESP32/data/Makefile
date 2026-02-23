@@ -35,10 +35,24 @@ HITL_SRCS = $(SRC_DIR)/hitl_main.cpp $(MATH_SRCS) $(HW_SRCS)
 HITL_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(HITL_SRCS))
 HITL_TARGET = hitl_flight
 
-# --- BUILD RULES ---
-.PHONY: all clean log directories sitl sitl_servo hitl
+# --- TEST CONFIGURATIONS ---
+# Hardware Unit Tests (RPi Only)
+TEST_SERVO_SRCS = $(SRC_DIR)/test_servo.cpp $(SRC_DIR)/ServoControllerI2C.cpp
+TEST_SERVO_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_SERVO_SRCS))
+TEST_SERVO_TARGET = test_servo
 
-all: directories sitl sitl_servo hitl
+TEST_IMU_SRCS = $(SRC_DIR)/test_imu.cpp $(SRC_DIR)/ICM20948.cpp
+TEST_IMU_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_IMU_SRCS))
+TEST_IMU_TARGET = test_imu
+
+TEST_BARO_SRCS = $(SRC_DIR)/test_baro.cpp $(SRC_DIR)/BMP390.cpp
+TEST_BARO_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_BARO_SRCS))
+TEST_BARO_TARGET = test_baro
+
+# --- BUILD RULES ---
+.PHONY: all clean log directories sitl sitl_servo hitl tests test_servo test_imu test_baro
+
+all: directories sitl sitl_servo hitl tests
 
 directories:
 	@mkdir -p $(BUILD_DIR)
@@ -62,11 +76,27 @@ hitl: $(HITL_OBJS)
 	$(CXX) $(CXXFLAGS) -o $(HITL_TARGET) $(HITL_OBJS)
 	@echo "==> Full Flight Computer Build successful! Run ./$(HITL_TARGET)"
 
+# Hardware Unit Tests
+tests: test_servo test_imu test_baro
+	@echo "==> All Hardware Tests Compiled Successfully!"
+
+test_servo: $(TEST_SERVO_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_SERVO_TARGET) $(TEST_SERVO_OBJS)
+	@echo "==> Built test_servo! Run ./$(TEST_SERVO_TARGET)"
+
+test_imu: $(TEST_IMU_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_IMU_TARGET) $(TEST_IMU_OBJS)
+	@echo "==> Built test_imu! Run ./$(TEST_IMU_TARGET)"
+
+test_baro: $(TEST_BARO_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_BARO_TARGET) $(TEST_BARO_OBJS)
+	@echo "==> Built test_baro! Run ./$(TEST_BARO_TARGET)"
+
 # Utility Rules
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) sitl_flight_log.csv
-	@echo "==> Cleaned build artifacts."
+	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) $(TEST_SERVO_TARGET) $(TEST_IMU_TARGET) $(TEST_BARO_TARGET) sitl_flight_log.csv hitl_flight_log.csv
+	@echo "==> Cleaned build artifacts and logs."
 
 log:
 	python3 plot_log.py
