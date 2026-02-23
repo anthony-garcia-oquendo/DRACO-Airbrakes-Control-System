@@ -72,7 +72,7 @@ int main() {
     double actual_flap_angle = 0.0;
 
     // --- Open CSV ---
-    std::ofstream log_file("sitl_flight_servo_log.csv");
+    std::ofstream log_file("sitl_flight_log.csv");
     log_file << "Time(s),Alt(m),Vel(m/s),Unbraked_Pred(m),PID_Wants(deg),Actual_Flap(deg),Actual_Servo(deg)\n";
     log_file << std::fixed << std::setprecision(3);
     

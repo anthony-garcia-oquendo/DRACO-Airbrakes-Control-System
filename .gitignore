@@ -25,6 +25,9 @@ sitl_sim
 hitl_sim
 hitl_flight
 sitl_servo
+test_servo
+test_baro
+test_imu
 sitl_flight_servo_log.csv
 !docs/lookup_tables/**/*.csv
 !data/**/*.csv

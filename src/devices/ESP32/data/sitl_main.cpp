@@ -11,11 +11,18 @@
 #include "pid_controller.h"
 
 // TARGET APOGEE (in meters) - This was the target discussed in the latest report, based on the best case from OpenRocket simulations. 
-const double TARGET_APOGEE = 220; // 4400 ft in meters
+const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
+
+// MINI MOTOR TEST APOGEE
+// const double TARGET_APOGEE = 220.0; // 720 ft in meters
 
 // TAKEN FROM LATEST OPENROCKET SIMULATION BEST CASE (2026-01-30)
-const double BURNOUT_ALTITUDE = 141.048; // Altitude at motor burnout in meters
-const double BURNOUT_VELOCITY = 49.419; // Velocity at motor burnout in m/s
+const double BURNOUT_ALTITUDE = 275.877; 
+const double BURNOUT_VELOCITY = 186.717; 
+
+// MINI MOTOR TEST CONDITIONS 
+// const double BURNOUT_ALTITUDE = 141.048; // Altitude at motor burnout in meters
+// const double BURNOUT_VELOCITY = 49.419; // Velocity at motor burnout in m/s
 
 
 

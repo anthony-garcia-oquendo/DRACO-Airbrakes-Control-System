@@ -100,11 +100,24 @@ int ServoControllerI2C::read_register(int reg) {
 void ServoControllerI2C::test_rotation(int channel, double delta, int wait_ms) {
     std::cout << "[SERVO] Starting test rotation on channel " << channel << "...\n";
     double current = 0.0;
+    
+    // Force the initial movement to be positive (upward)
+    delta = std::abs(delta); 
+
     while (true) {
-        if (current >= 45.0 || current <= 0.0) {
-            delta *= -1.0;
-        }
         current += delta;
+
+        // Bounce off the ceiling
+        if (current >= 45.0) {
+            current = 45.0;
+            delta = -std::abs(delta); // Force downward
+        } 
+        // Bounce off the floor
+        else if (current <= 0.0) {
+            current = 0.0;
+            delta = std::abs(delta);  // Force upward
+        }
+
         rotate(channel, current);
         std::this_thread::sleep_for(std::chrono::milliseconds(wait_ms));
     }
