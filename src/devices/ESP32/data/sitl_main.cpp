@@ -11,11 +11,11 @@
 #include "pid_controller.h"
 
 // TARGET APOGEE (in meters) - This was the target discussed in the latest report, based on the best case from OpenRocket simulations. 
-const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
+const double TARGET_APOGEE = 220; // 4400 ft in meters
 
 // TAKEN FROM LATEST OPENROCKET SIMULATION BEST CASE (2026-01-30)
-const double BURNOUT_ALTITUDE = 275.877; // Altitude at motor burnout in meters
-const double BURNOUT_VELOCITY = 186.717; // Velocity at motor burnout in m/s
+const double BURNOUT_ALTITUDE = 141.048; // Altitude at motor burnout in meters
+const double BURNOUT_VELOCITY = 49.419; // Velocity at motor burnout in m/s
 
 
 
@@ -118,7 +118,7 @@ int main() {
         double drag_force = calculate_drag(actual_flap_angle, altitude, velocity);
 
         //Noise Stress Test to simulate real-world variability (e.g., wind gusts, sensor noise)
-        double noise_intensity = 0.02; // Set to 0 for no noise, increase for more variability 
+        double noise_intensity = 0.00; // Set to 0 for no noise, increase for more variability 
         double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
         drag_force *= noise_factor;
 

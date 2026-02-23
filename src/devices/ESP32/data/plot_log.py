@@ -1,7 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-TARGET_APOGEE = 1341.12 
+TARGET_APOGEE = 1341.12
+
+
+# For mini motor
+# TARGET_APOGEE = 220
 
 
 # 1. Load the data
