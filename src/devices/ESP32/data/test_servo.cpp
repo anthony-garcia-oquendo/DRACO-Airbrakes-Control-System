@@ -58,11 +58,11 @@ int main() {
             global_servo->rotate(AIRBRAKE_CHANNEL, servo_deg);
             
             // Wait 50ms between steps so you can actually watch the mechanism move smoothly
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
 
         // Small pause at full deployment
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
         // --- STOW FLAPS (Sweep Down) ---
         for (int flap_deg = 45; flap_deg >= 0; --flap_deg) {
@@ -74,11 +74,11 @@ int main() {
             
             global_servo->rotate(AIRBRAKE_CHANNEL, servo_deg);
             
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
 
         // Small pause at fully stowed
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     return 0;
