@@ -74,6 +74,23 @@ void ServoControllerI2C::rotate(int channel, double angle) {
     set_pwm(channel, 0, tick);
 }
 
+void ServoControllerI2C::rotate_cam(int channel, double servo_angle) {
+    // 1. Safety clamp specifically for your cam mechanism
+    if (servo_angle < 0.0) {
+        servo_angle = 0.0;
+    } else if (servo_angle > 21.04) {
+        servo_angle = 21.04;
+    }
+
+    // 2. Safely invert the angle so it moves clockwise!
+    // An input of 0.0 (stowed) becomes physical 21.04
+    // An input of 21.04 (deployed) becomes physical 0.0
+    double safe_physical_angle = 21.04 - servo_angle;
+
+    // 3. Send the calculated angle to the raw driver
+    rotate(channel, safe_physical_angle);
+}
+
 void ServoControllerI2C::set_pwm(int channel, int on_tick, int off_tick) {
     int reg_base = LED0_ON_L + 4 * channel;
     write_register(reg_base, on_tick & 0xFF);
@@ -96,6 +113,8 @@ int ServoControllerI2C::read_register(int reg) {
     read(i2c_fd, buf, 1);
     return buf[0];
 }
+
+
 
 void ServoControllerI2C::test_rotation(int channel, double delta, int wait_ms) {
     std::cout << "[SERVO] Starting test rotation on channel " << channel << "...\n";

@@ -20,6 +20,9 @@ public:
     // Actuate the specific servo channel (0-15) to a given angle
     void rotate(int channel, double angle);
 
+    // Automatically inverts the angle for clockwise deployment
+    void rotate_cam(int channel, double servo_angle);
+
     // Test sequence
     void test_rotation(int channel, double delta = 1.0, int wait_ms = 1000);
 

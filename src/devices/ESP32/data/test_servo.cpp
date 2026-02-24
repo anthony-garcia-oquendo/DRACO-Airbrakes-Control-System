@@ -13,8 +13,8 @@ ServoControllerI2C* global_servo = nullptr;
 void emergency_shutdown(int signum) {
     std::cout << "\n\n[EMERGENCY] Ctrl+C detected! Shutting down hardware...\n";
     if (global_servo != nullptr) {
-        std::cout << "Stowing flaps to 0 degrees...\n";
-        global_servo->rotate(0, 0.0); // Channel 0, 0 degrees
+    std::cout << "Stowing flaps to 0 degrees (Servo 21.04)...\n";
+    global_servo->rotate(0, 0.0); // Stowed position
         
         // Deleting the object triggers the destructor, putting PCA9685 to sleep
         delete global_servo; 
@@ -38,39 +38,35 @@ int main() {
     // 3. Custom Sweep Loop using the Cam Table
     while (true) {
         
-        // --- DEPLOY FLAPS (Sweep Up) ---
+// --- DEPLOY FLAPS (Sweep Up) ---
         for (int flap_deg = 0; flap_deg <= 45; ++flap_deg) {
-            double servo_deg = CAM_SERVO_TABLE[flap_deg];
+            // THE FIX: Invert the servo angle mathematically!
+            double servo_deg = CAM_SERVO_TABLE[flap_deg]; 
             
-            // Console log using \r to overwrite the same line cleanly
             std::cout << "\r[DEPLOYING] Flap: " << std::setw(2) << flap_deg 
                       << " deg -> Servo: " << std::fixed << std::setprecision(2) << servo_deg 
                       << " deg   " << std::flush;
             
-            global_servo->rotate(AIRBRAKE_CHANNEL, servo_deg);
-            
-            // Wait 50ms between steps so you can actually watch the mechanism move smoothly
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            global_servo->rotate_cam(AIRBRAKE_CHANNEL, servo_deg);
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
 
-        // Small pause at full deployment
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
         // --- STOW FLAPS (Sweep Down) ---
         for (int flap_deg = 45; flap_deg >= 0; --flap_deg) {
+            // THE FIX: Invert the servo angle mathematically!
             double servo_deg = CAM_SERVO_TABLE[flap_deg];
             
             std::cout << "\r[ STOWING ] Flap: " << std::setw(2) << flap_deg 
                       << " deg -> Servo: " << std::fixed << std::setprecision(2) << servo_deg 
                       << " deg   " << std::flush;
             
-            global_servo->rotate(AIRBRAKE_CHANNEL, servo_deg);
-            
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            global_servo->rotate_cam(AIRBRAKE_CHANNEL, servo_deg);
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
 
-        // Small pause at fully stowed
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
     return 0;
