@@ -73,6 +73,9 @@ int main() {
     double actual_servo_angle = 0.0;
     double actual_flap_angle = 0.0;
 
+    // Deployment Ramp Variables
+    double RAMP_DURATION = 1.0; // Time to ramp from 0 to full control effort
+
     // --- 1. Open CSV ---
     std::ofstream log_file("sitl_flight_log.csv");
     if (!log_file.is_open()) {
@@ -89,11 +92,14 @@ int main() {
     // --- 2. Simulation Loop ---
     for (double t = 0; t < 20.0; t += dt) {
         
+        double ramp_factor = std::min(1.0, t / RAMP_DURATION);
+        double max_control_effort = 45.0 * ramp_factor; // Linearly ramp from 0 to 45 degrees over RAMP_DURATION seconds
         // A. Prediction (What we think will happen if we do nothing)
         double unbraked_pred = predict_apogee(0.0, altitude, velocity);
 
         // B. Controller Logic (Decision)
         double desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
+        desired_flap_angle = std::max(0.0, std::min(max_control_effort, desired_flap_angle));
 
         // C. Hardware Mapping (Decision -> Motor Command)
         double desired_servo_angle = get_servo_angle_from_cam(desired_flap_angle);
