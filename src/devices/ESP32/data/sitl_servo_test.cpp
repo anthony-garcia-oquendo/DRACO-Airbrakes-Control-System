@@ -85,6 +85,8 @@ int main() {
 
         // B. Controller Logic
         double desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
+
+        // Ramp factor for gradual deployment (prevents shock to the system at t=0)
         double ramp_factor = std::min(1.0, t / RAMP_DURATION);
         double max_control_effort = 45.0 * ramp_factor; // Linearly ramp from 0 to 45 degrees over RAMP_DURATION seconds
         desired_flap_angle = std::max(0.0, std::min(max_control_effort, desired_flap_angle));

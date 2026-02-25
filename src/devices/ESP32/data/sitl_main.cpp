@@ -92,6 +92,7 @@ int main() {
     // --- 2. Simulation Loop ---
     for (double t = 0; t < 20.0; t += dt) {
         
+        // Ramp factor for gradual deployment (prevents shock to the system at t=0)
         double ramp_factor = std::min(1.0, t / RAMP_DURATION);
         double max_control_effort = 45.0 * ramp_factor; // Linearly ramp from 0 to 45 degrees over RAMP_DURATION seconds
         // A. Prediction (What we think will happen if we do nothing)
@@ -99,6 +100,7 @@ int main() {
 
         // B. Controller Logic (Decision)
         double desired_flap_angle = calculate_control_effort(altitude, velocity, target_apogee, dt, airbrake_pid);
+        // Apply ramp factor to prevent sudden large control efforts at the start of the simulation
         desired_flap_angle = std::max(0.0, std::min(max_control_effort, desired_flap_angle));
 
         // C. Hardware Mapping (Decision -> Motor Command)
