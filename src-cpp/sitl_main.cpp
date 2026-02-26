@@ -74,7 +74,7 @@ int main() {
     double actual_flap_angle = 0.0;
 
     // Deployment Ramp Variables
-    double RAMP_DURATION = 1.0; // Time to ramp from 0 to full control effort
+    double RAMP_DURATION = 4.0; // Time to ramp from 0 to full control effort
 
     // --- 1. Open CSV ---
     std::ofstream log_file("sitl_flight_log.csv");
@@ -133,7 +133,7 @@ int main() {
         double drag_force = calculate_drag(actual_flap_angle, altitude, velocity);
 
         //Noise Stress Test to simulate real-world variability (e.g., wind gusts, sensor noise)
-        double noise_intensity = 0.20; // Set to 0 for no noise, increase for more variability 
+        double noise_intensity = 0.0; // Set to 0 for no noise, increase for more variability 
         double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
         drag_force *= noise_factor;
 
