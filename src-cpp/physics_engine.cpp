@@ -9,7 +9,7 @@ const double GROUND_PRESSURE_PA = 101325.0; // HPA (~1013 mb)
 const double GRAVITY = 9.80665;             // m/s²
 const double R_AIR = 287.058;               // J/(kg·K)
 const double LAPSE_RATE = 0.0065;           // °C per meter
-const double VEHICLE_MASS = 21.912; // kg at BURNOUT
+const double VEHICLE_MASS = 22.807; // kg at BURNOUT
 // For mini motor
 // const double VEHICLE_MASS = 22.664; // kg at BURNOUT
 const double PREDICTION_FREQUENCY = 50.0; // Hz for RK4 integration

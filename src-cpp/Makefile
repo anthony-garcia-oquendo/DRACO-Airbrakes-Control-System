@@ -49,6 +49,10 @@ TEST_BARO_SRCS = $(SRC_DIR)/test_baro.cpp $(SRC_DIR)/BMP390.cpp
 TEST_BARO_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_BARO_SRCS))
 TEST_BARO_TARGET = test_baro
 
+TEST_KALMAN_SRCS = $(SRC_DIR)/test_kalman.cpp $(SRC_DIR)/KalmanFilter.cpp
+TEST_KALMAN_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_KALMAN_SRCS))
+TEST_KALMAN_TARGET = test_kalman
+
 # --- BUILD RULES ---
 .PHONY: all clean log directories sitl sitl_servo hitl tests test_servo test_imu test_baro
 
@@ -77,8 +81,8 @@ hitl: $(HITL_OBJS)
 	@echo "==> Full Flight Computer Build successful! Run ./$(HITL_TARGET)"
 
 # Hardware Unit Tests
-tests: test_servo test_imu test_baro
-	@echo "==> All Hardware Tests Compiled Successfully!"
+tests: test_servo test_imu test_baro test_kalman
+	@echo "==> All Hardware & Math Tests Compiled Successfully!"
 
 test_servo: $(TEST_SERVO_OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TEST_SERVO_TARGET) $(TEST_SERVO_OBJS)
@@ -91,6 +95,10 @@ test_imu: $(TEST_IMU_OBJS)
 test_baro: $(TEST_BARO_OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TEST_BARO_TARGET) $(TEST_BARO_OBJS)
 	@echo "==> Built test_baro! Run ./$(TEST_BARO_TARGET)"
+
+test_kalman: $(TEST_KALMAN_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_KALMAN_TARGET) $(TEST_KALMAN_OBJS)
+	@echo "==> Built test_kalman! Run ./$(TEST_KALMAN_TARGET)"
 
 # Utility Rules
 clean:
