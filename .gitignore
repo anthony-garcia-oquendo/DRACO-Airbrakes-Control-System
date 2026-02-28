@@ -29,6 +29,8 @@ test_servo
 test_baro
 test_kalman
 test_imu
+kalman_test_log.csv
+kalman_plot.png
 sitl_flight_servo_log.csv
 !docs/lookup_tables/**/*.csv
 !data/**/*.csv
