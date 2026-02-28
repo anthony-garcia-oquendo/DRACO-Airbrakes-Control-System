@@ -27,6 +27,7 @@ hitl_flight
 sitl_servo
 test_servo
 test_baro
+test_kalman
 test_imu
 sitl_flight_servo_log.csv
 !docs/lookup_tables/**/*.csv
