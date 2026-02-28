@@ -22,15 +22,6 @@ enum FlightState {
     DESCENT = 3
 };
 
-// Mapping from Flap Degree (Index 0-45) to Servo Rotation Degree
-const double CAM_SERVO_TABLE[46] = {
-    0.00, 0.47, 0.94, 1.41, 1.88, 2.35, 2.83, 3.29, 3.77, 4.25,
-    4.73, 5.21, 5.69, 6.17, 6.65, 7.13, 7.61, 8.10, 8.58, 9.06,
-    9.54, 10.02, 10.50, 10.98, 11.46, 11.94, 12.41, 12.89, 13.36, 13.83,
-    14.30, 14.77, 15.24, 15.70, 16.16, 16.62, 17.08, 17.53, 17.98, 18.43,
-    18.88, 19.32, 19.75, 20.19, 20.62, 21.04
-};
-
 // Forward Mapping: Flap -> Servo
 double get_servo_angle_from_cam(double flap_angle) {
     flap_angle = std::max(0.0, std::min(45.0, flap_angle));
