@@ -17,8 +17,8 @@ const double TARGET_APOGEE = 1341.12; // 4400 ft in meters
 // const double TARGET_APOGEE = 220.0; // 720 ft in meters
 
 // TAKEN FROM LATEST OPENROCKET SIMULATION BEST CASE (2026-01-30)
-const double BURNOUT_ALTITUDE = 275.877; 
-const double BURNOUT_VELOCITY = 186.717; 
+const double BURNOUT_ALTITUDE = 260.033; 
+const double BURNOUT_VELOCITY = 180.149; 
 
 // MINI MOTOR TEST CONDITIONS 
 // const double BURNOUT_ALTITUDE = 141.048; // Altitude at motor burnout in meters
@@ -74,7 +74,7 @@ int main() {
     double actual_flap_angle = 0.0;
 
     // Deployment Ramp Variables
-    double RAMP_DURATION = 4.0; // Time to ramp from 0 to full control effort
+    double RAMP_DURATION = 1.0; // Time to ramp from 0 to full control effort
 
     // --- 1. Open CSV ---
     std::ofstream log_file("sitl_flight_log.csv");
