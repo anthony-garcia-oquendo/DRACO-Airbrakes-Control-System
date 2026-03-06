@@ -84,9 +84,9 @@ int main() {
     std::random_device rd;
     std::mt19937 gen(rd());
     // Distribution for jitter (Gaussian noise with mean 0 and std dev 1.5)
-    std::normal_distribution<double> jitter_dist(0.0, 40.0);
+    std::normal_distribution<double> jitter_dist(0.0, 1.5);
     // Distribution for massive jumps (±25 meters)
-    std::uniform_real_distribution<double> jump_dist(-300.0, 300.0);
+    std::uniform_real_distribution<double> jump_dist(-25.0, 25.0);
     // Dice roll for glitch probability (5% chance)
     std::uniform_real_distribution<double> glitch_chance(0.0, 1.0);
 
