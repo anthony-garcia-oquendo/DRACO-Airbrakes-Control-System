@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 TARGET_APOGEE = 1341.12
+USE_FEET = True  # False = meters, True = feet
+M_TO_FT = 3.28084
 
 
 # For mini motor
@@ -19,12 +21,20 @@ except FileNotFoundError:
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
 # 3. Plot Altitude and Prediction on the primary Y-axis
-ax1.plot(df['Time(s)'], df['Alt(m)'], label='Actual Altitude', color='blue', linewidth=2)
-ax1.plot(df['Time(s)'], df['Unbraked_Pred(m)'], label='Unbraked Prediction', color='orange', linestyle='--')
-ax1.axhline(TARGET_APOGEE, color='red', linestyle=':', label=f'Target Apogee ({TARGET_APOGEE}m)')
+alt_scale = M_TO_FT if USE_FEET else 1.0
+alt_unit = 'feet' if USE_FEET else 'meters'
+alt_unit_short = 'ft' if USE_FEET else 'm'
+
+altitude = df['Alt(m)'] * alt_scale
+unbraked_prediction = df['Unbraked_Pred(m)'] * alt_scale
+target_apogee = TARGET_APOGEE * alt_scale
+
+ax1.plot(df['Time(s)'], altitude, label='Actual Altitude', color='blue', linewidth=2)
+ax1.plot(df['Time(s)'], unbraked_prediction, label='Unbraked Prediction', color='orange', linestyle='--')
+ax1.axhline(target_apogee, color='red', linestyle=':', label=f'Target Apogee ({target_apogee:.2f}{alt_unit_short})')
 
 ax1.set_xlabel('Time (seconds)')
-ax1.set_ylabel('Altitude (meters)', color='black')
+ax1.set_ylabel(f'Altitude ({alt_unit})', color='black')
 ax1.tick_params(axis='y', labelcolor='black')
 ax1.grid(True, linestyle='--', alpha=0.6)
 

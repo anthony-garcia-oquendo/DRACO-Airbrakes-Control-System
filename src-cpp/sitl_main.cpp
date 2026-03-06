@@ -133,7 +133,7 @@ int main() {
         double drag_force = calculate_drag(actual_flap_angle, altitude, velocity);
 
         //Noise Stress Test to simulate real-world variability (e.g., wind gusts, sensor noise)
-        double noise_intensity = 0.02; // Set to 0 for no noise, increase for more variability 
+        double noise_intensity = 0.5; // Set to 0 for no noise, increase for more variability 
         double noise_factor = 1.0 + ((static_cast<double>(std::rand()) / RAND_MAX) * (noise_intensity * 2.0) - noise_intensity);
         drag_force *= noise_factor;
 
@@ -149,9 +149,18 @@ int main() {
     log_file.close();
     
     double error = (altitude - target_apogee);
-    std::cout << "\n--- FINAL APOGEE: " << altitude << " m ---\n";
-    std::cout << "Target: " << target_apogee << " m | Error: " << error << " m\n";
+    double altitude_ft = altitude * 3.28084;
+    double target_apogee_ft = target_apogee * 3.28084;
+    double error_ft = error * 3.28084;
+    
+    std::cout << "\n--- FINAL APOGEE: " << altitude << " m (" << altitude_ft << " ft) ---\n";
+    std::cout << "Target: " << target_apogee << " m (" << target_apogee_ft << " ft) | Error: " << error << " m (" << error_ft << " ft)\n";
     std::cout << "Percentage Error: " << (error / target_apogee) * 100 << " %\n";
+    
+    double unbraked_apogee = predict_apogee(0.0, BURNOUT_ALTITUDE, BURNOUT_VELOCITY);
+    double airbrake_reduction = unbraked_apogee - altitude;
+    double airbrake_reduction_ft = airbrake_reduction * 3.28084;
+    std::cout << "Airbrake Reduction Achieved: " << airbrake_reduction << " m (" << airbrake_reduction_ft << " ft)\n";
 
     // --- 3. Run Plot Script ---
     std::cout << "Running plot_log.py...\n";
