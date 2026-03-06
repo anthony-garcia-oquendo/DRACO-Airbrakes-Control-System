@@ -4,8 +4,8 @@
 #include <cmath>
 
 // Global PID Constants
-const double Kp = 0.357;
-const double Ki = 0.247;
+const double Kp = 0.356;
+const double Ki = 0.151;
 const double Kd = 0.11;
 
 // For mini motor
