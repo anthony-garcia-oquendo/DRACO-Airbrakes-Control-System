@@ -20,6 +20,8 @@ ENV/
 
 flight_plot.png
 sitl_flight_log.csv
+hitl_flight_log.csv
+calibrate_servo
 build/
 sitl_sim
 hitl_sim
