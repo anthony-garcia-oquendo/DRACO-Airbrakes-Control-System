@@ -7,7 +7,7 @@ M_TO_FT = 3.28084
 
 
 # For mini motor
-# TARGET_APOGEE = 220
+TARGET_APOGEE = 220
 
 
 # 1. Load the data
