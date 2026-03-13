@@ -25,6 +25,7 @@ calibrate_servo
 build/
 sitl_sim
 hitl_sim
+buzzer_test
 hitl_flight
 sitl_servo
 test_servo

@@ -1,20 +1,36 @@
-#include "PassiveBuzzerPWM.hpp"
+#include "Buzzer.h"
 
+#include <cerrno>
+#include <cstring>
 #include <fstream>
+#include <sstream>
 #include <thread>
 #include <chrono>
 #include <stdexcept>
+#include <filesystem>
+
+namespace {
+std::string buildIOError(const std::string& action, const std::string& path) {
+    int err = errno;
+    std::ostringstream oss;
+    oss << "Failed to " << action << ": " << path;
+    if (err != 0) {
+        oss << " (" << std::strerror(err) << ")";
+    }
+    return oss.str();
+}
+}
 
 void PassiveBuzzerPWM::writeFile(const std::string& path, const std::string& value) {
     std::ofstream file(path);
     if (!file.is_open()) {
-        throw std::runtime_error("Failed to open: " + path);
+        throw std::runtime_error(buildIOError("open", path));
     }
 
     file << value;
 
     if (!file) {
-        throw std::runtime_error("Failed to write to: " + path);
+        throw std::runtime_error(buildIOError("write", path));
     }
 }
 
@@ -23,12 +39,83 @@ bool PassiveBuzzerPWM::fileExists(const std::string& path) {
     return file.good();
 }
 
+std::string PassiveBuzzerPWM::listAvailablePwmChips() {
+    const std::filesystem::path pwmRoot("/sys/class/pwm");
+    if (!std::filesystem::exists(pwmRoot)) {
+        return "none (/sys/class/pwm is missing)";
+    }
+
+    std::ostringstream oss;
+    bool found = false;
+    for (const auto& entry : std::filesystem::directory_iterator(pwmRoot)) {
+        const std::string name = entry.path().filename().string();
+        if (name.rfind("pwmchip", 0) == 0) {
+            if (found) {
+                oss << ", ";
+            }
+            oss << name;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        return "none";
+    }
+
+    return oss.str();
+}
+
+int PassiveBuzzerPWM::readIntFile(const std::string& path) {
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        throw std::runtime_error(buildIOError("open", path));
+    }
+
+    int value = -1;
+    file >> value;
+    if (!file) {
+        throw std::runtime_error("Failed to parse integer from: " + path);
+    }
+
+    return value;
+}
+
 PassiveBuzzerPWM::PassiveBuzzerPWM(int chip, int channel) : enabled(false) {
+    if (chip < 0) {
+        throw std::invalid_argument("PWM chip index must be >= 0");
+    }
+    if (channel < 0) {
+        throw std::invalid_argument("PWM channel index must be >= 0");
+    }
+
     std::string chipPath = "/sys/class/pwm/pwmchip" + std::to_string(chip);
     pwmPath = chipPath + "/pwm" + std::to_string(channel);
 
+    if (!fileExists(chipPath)) {
+        throw std::runtime_error(
+            "PWM chip path not found: " + chipPath +
+            ". Available chips: " + listAvailablePwmChips() +
+            ". Enable PWM in your kernel/device-tree and retry."
+        );
+    }
+
+    const int numChannels = readIntFile(chipPath + "/npwm");
+    if (channel >= numChannels) {
+        throw std::runtime_error(
+            "Requested pwm channel " + std::to_string(channel) +
+            " but " + chipPath + " exposes channels [0.." + std::to_string(numChannels - 1) + "]"
+        );
+    }
+
     if (!fileExists(pwmPath)) {
-        writeFile(chipPath + "/export", std::to_string(channel));
+        try {
+            writeFile(chipPath + "/export", std::to_string(channel));
+        } catch (const std::exception& e) {
+            throw std::runtime_error(
+                std::string(e.what()) +
+                ". You may need root or a udev rule for /sys/class/pwm access."
+            );
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 

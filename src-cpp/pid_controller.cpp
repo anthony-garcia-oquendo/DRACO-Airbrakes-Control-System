@@ -4,13 +4,13 @@
 #include <cmath>
 
 // Global PID Constants
-// const double Kp = 0.357;
-// const double Ki = 0.247;
+// const double Kp = 0.356;
+// const double Ki = 0.151;
 // const double Kd = 0.11;
 
 // For mini motor
 const double Kp = 1.5;
-const double Ki = 0.05;
+const double Ki = 0.04;
 const double Kd = 0.0;
 
 double calculate_control_effort(double current_alt, double current_vel, double target_apogee, double dt, PIDState &state) {

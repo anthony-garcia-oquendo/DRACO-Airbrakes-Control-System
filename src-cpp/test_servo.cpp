@@ -48,7 +48,7 @@ int main() {
                       << " deg   " << std::flush;
             
             global_servo->rotate_cam(AIRBRAKE_CHANNEL, servo_deg);
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -63,7 +63,7 @@ int main() {
                       << " deg   " << std::flush;
             
             global_servo->rotate_cam(AIRBRAKE_CHANNEL, servo_deg);
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(500));

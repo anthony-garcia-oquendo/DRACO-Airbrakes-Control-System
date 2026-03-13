@@ -16,6 +16,8 @@ private:
 
     static void writeFile(const std::string& path, const std::string& value);
     static bool fileExists(const std::string& path);
+    static std::string listAvailablePwmChips();
+    static int readIntFile(const std::string& path);
 
 public:
     PassiveBuzzerPWM(int chip, int channel);

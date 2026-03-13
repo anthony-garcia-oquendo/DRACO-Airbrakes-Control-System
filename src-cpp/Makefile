@@ -53,8 +53,16 @@ TEST_KALMAN_SRCS = $(SRC_DIR)/test_kalman.cpp $(SRC_DIR)/KalmanFilter.cpp
 TEST_KALMAN_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_KALMAN_SRCS))
 TEST_KALMAN_TARGET = test_kalman
 
+TEST_BUZZER_SRCS = $(SRC_DIR)/buzzer_test.cpp $(SRC_DIR)/Buzzer.cpp
+TEST_BUZZER_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_BUZZER_SRCS))
+TEST_BUZZER_TARGET = buzzer_test
+
+CALIBRATE_SERVO_SRCS = $(SRC_DIR)/calibrate_servo.cpp $(SRC_DIR)/ServoControllerI2C.cpp
+CALIBRATE_SERVO_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(CALIBRATE_SERVO_SRCS))
+CALIBRATE_SERVO_TARGET = calibrate_servo
+
 # --- BUILD RULES ---
-.PHONY: all clean log directories sitl sitl_servo hitl tests test_servo test_imu test_baro
+.PHONY: all clean log directories sitl sitl_servo hitl tests test_servo test_imu test_baro test_kalman buzzer_test
 
 all: directories sitl sitl_servo hitl tests
 
@@ -81,7 +89,7 @@ hitl: $(HITL_OBJS)
 	@echo "==> Full Flight Computer Build successful! Run ./$(HITL_TARGET)"
 
 # Hardware Unit Tests
-tests: test_servo test_imu test_baro test_kalman
+tests: test_servo test_imu test_baro test_kalman buzzer_test
 	@echo "==> All Hardware & Math Tests Compiled Successfully!"
 
 test_servo: $(TEST_SERVO_OBJS)
@@ -100,10 +108,18 @@ test_kalman: $(TEST_KALMAN_OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TEST_KALMAN_TARGET) $(TEST_KALMAN_OBJS)
 	@echo "==> Built test_kalman! Run ./$(TEST_KALMAN_TARGET)"
 
+buzzer_test: $(TEST_BUZZER_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_BUZZER_TARGET) $(TEST_BUZZER_OBJS)
+	@echo "==> Built buzzer_test! Run ./$(TEST_BUZZER_TARGET)"
+
+calibrate_servo: $(CALIBRATE_SERVO_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(CALIBRATE_SERVO_TARGET) $(CALIBRATE_SERVO_OBJS)
+	@echo "==> Built calibrate_servo! Run ./$(CALIBRATE_SERVO_TARGET)"
+
 # Utility Rules
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) $(TEST_SERVO_TARGET) $(TEST_IMU_TARGET) $(TEST_BARO_TARGET) sitl_flight_log.csv hitl_flight_log.csv
+	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) $(TEST_SERVO_TARGET) $(TEST_IMU_TARGET) $(TEST_BARO_TARGET) $(TEST_KALMAN_TARGET) $(TEST_BUZZER_TARGET) $(CALIBRATE_SERVO_TARGET) sitl_flight_log.csv hitl_flight_log.csv
 	@echo "==> Cleaned build artifacts and logs."
 
 log:
