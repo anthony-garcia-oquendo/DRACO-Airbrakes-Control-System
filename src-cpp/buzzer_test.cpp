@@ -47,6 +47,18 @@ int main(int argc, char* argv[]) {
         }
 
         const double dutyCycle = 0.75;
+
+        std::vector<Note> FurEliseMelody = {
+            {659, 160}, {622, 160}, {659, 160}, {622, 160}, {659, 160},
+            {494, 160}, {587, 160}, {523, 160}, {440, 280}, {0, 120},
+
+            {262, 160}, {330, 160}, {440, 160}, {494, 280}, {0, 120},
+            {330, 160}, {415, 160}, {494, 160}, {523, 280}, {0, 120},
+
+            {330, 160}, {659, 160}, {622, 160}, {659, 160}, {622, 160}, {659, 160},
+            {494, 160}, {587, 160}, {523, 160}, {440, 320}
+        };
+        
         std::vector<Note> melody = {
             {932, 83},
             {1109, 83},
@@ -156,7 +168,7 @@ int main(int argc, char* argv[]) {
             {78, 167}
         };
 
-        buzzer.playMelody(melody, 20, dutyCycle);
+        buzzer.playMelody(FurEliseMelody, 20, dutyCycle);
         buzzer.stop();
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
