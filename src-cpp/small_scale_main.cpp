@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 #include <iomanip>
+#include <cmath>
 
 // Custom Hardware Drivers
 #include "BMP390.h"
@@ -69,8 +70,16 @@ int main()
     KalmanFilter kf(0.0, 0.0);
     double launchpad_msl = calculate_launchpad_zero(baro);
     const double LOOP_DT = 0.01;
+    const int LIFTOFF_CONFIRM_SAMPLES = 5;   // 50 ms
+    const int BURNOUT_CONFIRM_SAMPLES = 3;   // 30 ms
+    const int APOGEE_CONFIRM_SAMPLES = 3;    // 30 ms
+    const int TOUCHDOWN_CONFIRM_SAMPLES = 10; // 100 ms
 
     FlightState current_state = ON_PAD;
+    int liftoff_counter = 0;
+    int burnout_counter = 0;
+    int apogee_counter = 0;
+    int touchdown_counter = 0;
     std::cout << "[SYSTEM] Zeroing complete. Starting main loop. Waiting for liftoff...\n";
 
     auto start_time = std::chrono::steady_clock::now();
@@ -99,34 +108,73 @@ int main()
         switch (current_state)
         {
         case ON_PAD:
-            if (accel_z > 20.0)
+            if (accel_z > 20.0 && (kf_vel > 5.0 || current_agl > 0.10))
+            {
+                liftoff_counter++;
+            }
+            else
+            {
+                liftoff_counter = 0;
+            }
+
+            if (liftoff_counter >= LIFTOFF_CONFIRM_SAMPLES)
             {
                 current_state = BOOST;
+                liftoff_counter = 0;
                 std::cout << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n";
                 log_file << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n";
             }
             break;
 
         case BOOST:
-            if (accel_z < 0.0 && kf_vel > 100.00)
+            if (accel_z < 0.0 && kf_vel > 30.0)
+            {
+                burnout_counter++;
+            }
+            else
+            {
+                burnout_counter = 0;
+            }
+
+            if (burnout_counter >= BURNOUT_CONFIRM_SAMPLES)
             {
                 current_state = COAST;
+                burnout_counter = 0;
                 std::cout << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
                 log_file << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
             }
             break;
 
         case COAST:
-            if (kf_vel < 0.0)
+            if (kf_vel < -1.0)
+            {
+                apogee_counter++;
+            }
+            else
+            {
+                apogee_counter = 0;
+            }
+
+            if (apogee_counter >= APOGEE_CONFIRM_SAMPLES)
             {
                 current_state = DESCENT;
+                apogee_counter = 0;
                 std::cout << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n";
                 log_file << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n";
             }
             break;
 
         case DESCENT:
-            if (kf_alt < 10.0 && kf_vel > -2.0)
+            if (current_agl < 2.0 && std::abs(kf_vel) < 6.0)
+            {
+                touchdown_counter++;
+            }
+            else
+            {
+                touchdown_counter = 0;
+            }
+
+            if (touchdown_counter >= TOUCHDOWN_CONFIRM_SAMPLES)
             {
                 std::cout << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n";
                 log_file << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n";
