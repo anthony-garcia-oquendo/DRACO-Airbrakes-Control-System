@@ -108,7 +108,7 @@ int main()
             break;
 
         case BOOST:
-            if (accel_z < 0.0 && kf_vel > 50.0)
+            if (accel_z < 0.0 && kf_vel > 100.00)
             {
                 current_state = COAST;
                 std::cout << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
