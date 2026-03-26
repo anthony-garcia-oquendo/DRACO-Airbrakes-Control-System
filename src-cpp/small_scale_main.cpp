@@ -70,9 +70,9 @@ int main()
     KalmanFilter kf(0.0, 0.0);
     double launchpad_msl = calculate_launchpad_zero(baro);
     const double LOOP_DT = 0.01;
-    const int LIFTOFF_CONFIRM_SAMPLES = 5;   // 50 ms
-    const int BURNOUT_CONFIRM_SAMPLES = 3;   // 30 ms
-    const int APOGEE_CONFIRM_SAMPLES = 3;    // 30 ms
+    const int LIFTOFF_CONFIRM_SAMPLES = 5;    // 50 ms
+    const int BURNOUT_CONFIRM_SAMPLES = 3;    // 30 ms
+    const int APOGEE_CONFIRM_SAMPLES = 3;     // 30 ms
     const int TOUCHDOWN_CONFIRM_SAMPLES = 10; // 100 ms
 
     FlightState current_state = ON_PAD;
