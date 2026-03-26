@@ -35,6 +35,15 @@ HITL_SRCS = $(SRC_DIR)/hitl_main.cpp $(MATH_SRCS) $(HW_SRCS)
 HITL_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(HITL_SRCS))
 HITL_TARGET = hitl_flight
 
+# Small Scale Flight Computer
+SMALL_SCALE_SRCS = $(SRC_DIR)/small_scale_main.cpp \
+                   $(SRC_DIR)/KalmanFilter.cpp \
+                   $(SRC_DIR)/ICM20948.cpp \
+                   $(SRC_DIR)/BMP390.cpp \
+                   $(SRC_DIR)/Buzzer.cpp
+SMALL_SCALE_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SMALL_SCALE_SRCS))
+SMALL_SCALE_TARGET = small_scale_flight
+
 # --- TEST CONFIGURATIONS ---
 # Hardware Unit Tests (RPi Only)
 TEST_SERVO_SRCS = $(SRC_DIR)/test_servo.cpp $(SRC_DIR)/ServoControllerI2C.cpp
@@ -62,9 +71,9 @@ CALIBRATE_SERVO_OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(CALIBRAT
 CALIBRATE_SERVO_TARGET = calibrate_servo
 
 # --- BUILD RULES ---
-.PHONY: all clean log directories sitl sitl_servo hitl tests test_servo test_imu test_baro test_kalman buzzer_test
+.PHONY: all clean log directories sitl sitl_servo hitl small_scale tests test_servo test_imu test_baro test_kalman buzzer_test
 
-all: directories sitl sitl_servo hitl tests
+all: directories sitl sitl_servo hitl small_scale tests
 
 directories:
 	@mkdir -p $(BUILD_DIR)
@@ -87,6 +96,11 @@ sitl_servo: $(SITL_SERVO_OBJS)
 hitl: $(HITL_OBJS)
 	$(CXX) $(CXXFLAGS) -o $(HITL_TARGET) $(HITL_OBJS)
 	@echo "==> Full Flight Computer Build successful! Run ./$(HITL_TARGET)"
+
+# Small Scale Flight Computer Build
+small_scale: $(SMALL_SCALE_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(SMALL_SCALE_TARGET) $(SMALL_SCALE_OBJS)
+	@echo "==> Small Scale Flight Computer Build successful! Run ./$(SMALL_SCALE_TARGET)"
 
 # Hardware Unit Tests
 tests: test_servo test_imu test_baro test_kalman buzzer_test
@@ -119,7 +133,7 @@ calibrate_servo: $(CALIBRATE_SERVO_OBJS)
 # Utility Rules
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) $(TEST_SERVO_TARGET) $(TEST_IMU_TARGET) $(TEST_BARO_TARGET) $(TEST_KALMAN_TARGET) $(TEST_BUZZER_TARGET) $(CALIBRATE_SERVO_TARGET) sitl_flight_log.csv hitl_flight_log.csv
+	rm -f $(SITL_TARGET) $(SITL_SERVO_TARGET) $(HITL_TARGET) $(SMALL_SCALE_TARGET) $(TEST_SERVO_TARGET) $(TEST_IMU_TARGET) $(TEST_BARO_TARGET) $(TEST_KALMAN_TARGET) $(TEST_BUZZER_TARGET) $(CALIBRATE_SERVO_TARGET) sitl_flight_log.csv hitl_flight_log.csv small_scale_flight_log.csv
 	@echo "==> Cleaned build artifacts and logs."
 
 log:

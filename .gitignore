@@ -38,3 +38,5 @@ sitl_flight_servo_log.csv
 !docs/lookup_tables/**/*.csv
 !data/**/*.csv
 !data/**/*.log
+small_scale_flight_log.csv
+small_scale_flight

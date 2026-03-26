@@ -77,7 +77,7 @@ int main()
     auto next_loop_time = start_time;
 
     // Play a little tune to signal the start of the test to signal correct initialization
-    buzzer.playMelody(OurMelody, 20, 0.75);
+    buzzer.playMelody(Salgo_Pa_La_Calle, 20, 0.75);
 
     // Main Loop
     while (true)

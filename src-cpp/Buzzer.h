@@ -10,7 +10,7 @@ struct Note
     int durationMs;
 };
 
-std::vector<Note> OurMelody = {
+inline const std::vector<Note> Salgo_Pa_La_Calle = {
     {932, 83},
     {1109, 83},
     {932, 83},
