@@ -19,11 +19,21 @@ int main() {
     while (true) {
         double current_alt = baro.get_altitude();
         double relative_alt = current_alt - launchpad_alt;
-
+        double pressure_pa = baro.get_pressure();
+        double pressure_hpa = pressure_pa / 100.0;
+        double pressure_bar = pressure_pa / 100000.0;
         std::cout << "\rAltitude: " << std::fixed << std::setprecision(2) 
                   << relative_alt << " m    " << std::flush;
+        
+        std::cout << "\rPressure: "
+              << std::fixed << std::setprecision(2)
+              << pressure_pa << " Pa | "
+              << pressure_hpa << " hPa | "
+              << pressure_bar << " bar | "
+              << "Altitude: " << relative_alt << " m     "
+              << std::flush;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     return 0;
-}
+}   
