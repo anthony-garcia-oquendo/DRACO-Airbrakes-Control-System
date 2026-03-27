@@ -48,7 +48,7 @@ int main()
 
     BMP390 baro(1, 0x77);
     ICM20948 imu(1, 0x69);
-    PassiveBuzzerPWM buzzer(0, 2z);
+    PassiveBuzzerPWM buzzer(0, 2);
 
     if (!imu.initialize())
     {
