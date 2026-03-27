@@ -48,7 +48,7 @@ int main()
 
     BMP390 baro(1, 0x77);
     ICM20948 imu(1, 0x69);
-    PassiveBuzzerPWM buzzer(0, 1);
+    PassiveBuzzerPWM buzzer(0, 2z);
 
     if (!imu.initialize())
     {
@@ -78,10 +78,10 @@ int main()
     const double LOOP_DT = 0.01;
     const auto LOOP_PERIOD = std::chrono::milliseconds(static_cast<int>(LOOP_DT * 1000));
     const auto LOG_PERIOD = std::chrono::milliseconds(100); // 10 Hz logging, 100 Hz control loop
-    const int LIFTOFF_CONFIRM_SAMPLES = 5;    // 50 ms
-    const int BURNOUT_CONFIRM_SAMPLES = 3;    // 30 ms
-    const int APOGEE_CONFIRM_SAMPLES = 3;     // 30 ms
-    const int TOUCHDOWN_CONFIRM_SAMPLES = 10; // 100 ms
+    const int LIFTOFF_CONFIRM_SAMPLES = 5;                  // 50 ms
+    const int BURNOUT_CONFIRM_SAMPLES = 3;                  // 30 ms
+    const int APOGEE_CONFIRM_SAMPLES = 3;                   // 30 ms
+    const int TOUCHDOWN_CONFIRM_SAMPLES = 10;               // 100 ms
 
     FlightState current_state = ON_PAD;
     int liftoff_counter = 0;
@@ -140,7 +140,8 @@ int main()
                 current_state = BOOST;
                 liftoff_counter = 0;
                 std::cout << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n";
-                log_file << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n" << std::flush;
+                log_file << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n"
+                         << std::flush;
             }
             break;
 
@@ -159,7 +160,8 @@ int main()
                 current_state = COAST;
                 burnout_counter = 0;
                 std::cout << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
-                log_file << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n" << std::flush;
+                log_file << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n"
+                         << std::flush;
             }
             break;
 
@@ -178,7 +180,8 @@ int main()
                 current_state = DESCENT;
                 apogee_counter = 0;
                 std::cout << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n";
-                log_file << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n" << std::flush;
+                log_file << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n"
+                         << std::flush;
             }
             break;
 
@@ -195,7 +198,8 @@ int main()
             if (touchdown_counter >= TOUCHDOWN_CONFIRM_SAMPLES)
             {
                 std::cout << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n";
-                log_file << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n" << std::flush;
+                log_file << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n"
+                         << std::flush;
                 log_file.close();
                 return 0;
             }
