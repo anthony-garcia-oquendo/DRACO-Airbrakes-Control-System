@@ -56,6 +56,12 @@ int main()
         return -1;
     }
 
+    if (!baro.initialize())
+    {
+        std::cerr << "[FATAL] Barometer initialization failed. Aborting.\n";
+        return -1;
+    }
+
     std::ofstream log_file("small_scale_flight_log.csv");
     if (!log_file.is_open())
     {
