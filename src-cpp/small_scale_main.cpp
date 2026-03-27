@@ -76,6 +76,8 @@ int main()
     KalmanFilter kf(0.0, 0.0);
     double launchpad_msl = calculate_launchpad_zero(baro);
     const double LOOP_DT = 0.01;
+    const auto LOOP_PERIOD = std::chrono::milliseconds(static_cast<int>(LOOP_DT * 1000));
+    const auto LOG_PERIOD = std::chrono::milliseconds(100); // 10 Hz logging, 100 Hz control loop
     const int LIFTOFF_CONFIRM_SAMPLES = 5;    // 50 ms
     const int BURNOUT_CONFIRM_SAMPLES = 3;    // 30 ms
     const int APOGEE_CONFIRM_SAMPLES = 3;     // 30 ms
@@ -90,6 +92,7 @@ int main()
 
     auto start_time = std::chrono::steady_clock::now();
     auto next_loop_time = start_time;
+    auto next_log_time = start_time;
 
     // Play a little tune to signal the start of the test to signal correct initialization
     buzzer.playMelody(Salgo_Pa_La_Calle, 20, 0.75);
@@ -109,7 +112,16 @@ int main()
         double kf_alt = kf.get_altitude();
         double kf_vel = kf.get_velocity();
 
-        log_file << t << "," << current_state << "," << current_agl << "," << accel_z << "," << kf_alt << "," << kf_vel << "\n";
+        if (now >= next_log_time)
+        {
+            log_file << t << "," << current_state << "," << current_agl << "," << accel_z << "," << kf_alt << "," << kf_vel << "\n";
+            log_file << std::flush;
+
+            do
+            {
+                next_log_time += LOG_PERIOD;
+            } while (next_log_time <= now);
+        }
 
         switch (current_state)
         {
@@ -128,7 +140,7 @@ int main()
                 current_state = BOOST;
                 liftoff_counter = 0;
                 std::cout << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n";
-                log_file << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n";
+                log_file << "\n[FLIGHT] LIFTOFF DETECTED! Transition to BOOST.\n" << std::flush;
             }
             break;
 
@@ -147,7 +159,7 @@ int main()
                 current_state = COAST;
                 burnout_counter = 0;
                 std::cout << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
-                log_file << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n";
+                log_file << "\n[FLIGHT] BURNOUT DETECTED! Transition to COAST.\n" << std::flush;
             }
             break;
 
@@ -166,7 +178,7 @@ int main()
                 current_state = DESCENT;
                 apogee_counter = 0;
                 std::cout << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n";
-                log_file << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n";
+                log_file << "\n[FLIGHT] APOGEE DETECTED! Apogee: " << kf_alt << " m\n" << std::flush;
             }
             break;
 
@@ -183,16 +195,15 @@ int main()
             if (touchdown_counter >= TOUCHDOWN_CONFIRM_SAMPLES)
             {
                 std::cout << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n";
-                log_file << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n";
+                log_file << "\n[SYSTEM] Touchdown detected. Closing log and shutting down.\n" << std::flush;
                 log_file.close();
                 return 0;
             }
             break;
         }
-        log_file << std::flush;
 
         // Enforce loop timing
-        next_loop_time += std::chrono::milliseconds(static_cast<int>(LOOP_DT * 1000));
+        next_loop_time += LOOP_PERIOD;
         std::this_thread::sleep_until(next_loop_time);
     }
 }
