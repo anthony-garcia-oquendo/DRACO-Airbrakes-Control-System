@@ -22,6 +22,55 @@ enum FlightState
     DESCENT = 3
 };
 
+struct IMUCalibration
+{
+    IMUVector3 launchpad_up_body;
+    IMUVector3 gyro_bias;
+};
+
+IMUVector3 add(const IMUVector3 &a, const IMUVector3 &b)
+{
+    return {a.x + b.x, a.y + b.y, a.z + b.z};
+}
+
+IMUVector3 subtract(const IMUVector3 &a, const IMUVector3 &b)
+{
+    return {a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+IMUVector3 scale(const IMUVector3 &v, double scalar)
+{
+    return {v.x * scalar, v.y * scalar, v.z * scalar};
+}
+
+double dot(const IMUVector3 &a, const IMUVector3 &b)
+{
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+IMUVector3 cross(const IMUVector3 &a, const IMUVector3 &b)
+{
+    return {
+        (a.y * b.z) - (a.z * b.y),
+        (a.z * b.x) - (a.x * b.z),
+        (a.x * b.y) - (a.y * b.x)};
+}
+
+double magnitude(const IMUVector3 &v)
+{
+    return std::sqrt(dot(v, v));
+}
+
+IMUVector3 normalize(const IMUVector3 &v)
+{
+    const double mag = magnitude(v);
+    if (mag < 1e-6)
+    {
+        return {0.0, 0.0, -1.0};
+    }
+    return scale(v, 1.0 / mag);
+}
+
 // --- Helper for Zeroing the Barometer ---
 double calculate_launchpad_zero(BMP390 &baro, int samples = 100)
 {
@@ -37,18 +86,32 @@ double calculate_launchpad_zero(BMP390 &baro, int samples = 100)
     return baseline;
 }
 
-double calculate_launchpad_accel_bias(ICM20948 &imu, int samples = 100)
+IMUCalibration calibrate_launchpad_imu(ICM20948 &imu, int samples = 200)
 {
-    std::cout << "[SYSTEM] Zeroing IMU Z acceleration. Do not touch...\n";
-    double sum = 0.0;
+    std::cout << "[SYSTEM] Calibrating IMU attitude reference. Do not touch...\n";
+    IMUVector3 accel_sum{0.0, 0.0, 0.0};
+    IMUVector3 gyro_sum{0.0, 0.0, 0.0};
     for (int i = 0; i < samples; ++i)
     {
-        sum += imu.get_accel_z();
+        accel_sum = add(accel_sum, imu.get_accel());
+        gyro_sum = add(gyro_sum, imu.get_gyro());
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
-    double baseline = sum / samples;
-    std::cout << "[SYSTEM] Launchpad IMU Bias Locked: " << baseline << " m/s^2\n";
-    return baseline;
+
+    const IMUVector3 accel_avg = scale(accel_sum, 1.0 / samples);
+    const IMUVector3 gyro_avg = scale(gyro_sum, 1.0 / samples);
+    const IMUVector3 launchpad_up_body = normalize(accel_avg);
+
+    std::cout << "[SYSTEM] Launchpad Up Vector Locked: ("
+              << launchpad_up_body.x << ", "
+              << launchpad_up_body.y << ", "
+              << launchpad_up_body.z << ")\n";
+    std::cout << "[SYSTEM] Launchpad Gyro Bias Locked: ("
+              << gyro_avg.x << ", "
+              << gyro_avg.y << ", "
+              << gyro_avg.z << ") rad/s\n";
+
+    return {launchpad_up_body, gyro_avg};
 }
 
 /* In this small scale test, we will only test the imu, barometer, and Kalman filter and state machine logic.
@@ -83,14 +146,18 @@ int main()
         return 1;
     }
 
-    log_file << "Time(s),State,Raw_AGL(m),Raw_Accel_Z(m/s2),Net_Accel_Z(m/s2),KF_Alt(m),KF_Vel(m/s)\n";
+    log_file << "Time(s),State,Raw_AGL(m),Raw_Accel_Z(m/s2),Vert_Accel(m/s2),KF_Alt(m),KF_Vel(m/s)\n";
     log_file << std::fixed << std::setprecision(3);
 
     // Init math and start states
     KalmanFilter kf(0.0, 0.0);
     double launchpad_msl = calculate_launchpad_zero(baro);
-    double launchpad_accel_bias = calculate_launchpad_accel_bias(imu);
+    IMUCalibration imu_calibration = calibrate_launchpad_imu(imu);
+    IMUVector3 up_body_estimate = imu_calibration.launchpad_up_body;
     const double LOOP_DT = 0.01;
+    const double GRAVITY = 9.80665;
+    const double ACCEL_TRUST_BAND = 1.5;
+    const double UP_BLEND_ALPHA = 0.02;
     const auto LOOP_PERIOD = std::chrono::milliseconds(static_cast<int>(LOOP_DT * 1000));
     const auto LOG_PERIOD = std::chrono::milliseconds(100); // 10 Hz logging, 100 Hz control loop
     const int LIFTOFF_CONFIRM_SAMPLES = 5;                  // 50 ms
@@ -119,10 +186,26 @@ int main()
         double t = std::chrono::duration<double>(now - start_time).count();
 
         double current_agl = baro.get_altitude() - launchpad_msl;
-        double raw_accel_z = imu.get_accel_z();
-        double net_accel_z = raw_accel_z - launchpad_accel_bias;
+        IMUVector3 accel_body = imu.get_accel();
+        IMUVector3 gyro_body = subtract(imu.get_gyro(), imu_calibration.gyro_bias);
+        double raw_accel_z = accel_body.z;
 
-        kf.predict(net_accel_z, LOOP_DT);
+        // Keep tracking the launchpad up-axis in body coordinates so tilt does not
+        // look like vertical acceleration.
+        up_body_estimate = normalize(subtract(up_body_estimate, scale(cross(gyro_body, up_body_estimate), LOOP_DT)));
+
+        const double accel_magnitude = magnitude(accel_body);
+        if (std::abs(accel_magnitude - GRAVITY) < ACCEL_TRUST_BAND)
+        {
+            const IMUVector3 measured_up_body = normalize(accel_body);
+            up_body_estimate = normalize(add(scale(up_body_estimate, 1.0 - UP_BLEND_ALPHA),
+                                             scale(measured_up_body, UP_BLEND_ALPHA)));
+        }
+
+        const double vertical_specific_force = dot(accel_body, up_body_estimate);
+        const double vertical_accel = vertical_specific_force - GRAVITY;
+
+        kf.predict(vertical_accel, LOOP_DT);
         kf.update(current_agl);
 
         double kf_alt = kf.get_altitude();
@@ -130,7 +213,7 @@ int main()
 
         if (now >= next_log_time)
         {
-            log_file << t << "," << current_state << "," << current_agl << "," << raw_accel_z << "," << net_accel_z << "," << kf_alt << "," << kf_vel << "\n";
+            log_file << t << "," << current_state << "," << current_agl << "," << raw_accel_z << "," << vertical_accel << "," << kf_alt << "," << kf_vel << "\n";
             log_file << std::flush;
 
             do
@@ -142,7 +225,7 @@ int main()
         switch (current_state)
         {
         case ON_PAD:
-            if (net_accel_z > 20.0 && (kf_vel > 5.0 || current_agl > 0.10))
+            if (vertical_accel > 20.0 && (kf_vel > 5.0 || current_agl > 0.10))
             {
                 liftoff_counter++;
             }
@@ -162,7 +245,7 @@ int main()
             break;
 
         case BOOST:
-            if (net_accel_z < 0.0 && kf_vel > 30.0)
+            if (vertical_accel < 0.0 && kf_vel > 30.0)
             {
                 burnout_counter++;
             }
