@@ -120,7 +120,7 @@ int main()
 
         double current_agl = baro.get_altitude() - launchpad_msl;
         double raw_accel_z = imu.get_accel_z();
-        double net_accel_z = raw_accel_z * -1.0;
+        double net_accel_z = raw_accel_z - launchpad_accel_bias;
 
         kf.predict(net_accel_z, LOOP_DT);
         kf.update(current_agl);
