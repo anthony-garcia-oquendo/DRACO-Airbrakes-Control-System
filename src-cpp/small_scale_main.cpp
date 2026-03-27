@@ -37,6 +37,20 @@ double calculate_launchpad_zero(BMP390 &baro, int samples = 100)
     return baseline;
 }
 
+double calculate_launchpad_accel_bias(ICM20948 &imu, int samples = 100)
+{
+    std::cout << "[SYSTEM] Zeroing IMU Z acceleration. Do not touch...\n";
+    double sum = 0.0;
+    for (int i = 0; i < samples; ++i)
+    {
+        sum += imu.get_accel_z();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    double baseline = sum / samples;
+    std::cout << "[SYSTEM] Launchpad IMU Bias Locked: " << baseline << " m/s^2\n";
+    return baseline;
+}
+
 /* In this small scale test, we will only test the imu, barometer, and Kalman filter and state machine logic.
    The flaps will never be actuated. We will log all data and state transitions to a CSV file for post-flight analysis.
 */
@@ -69,12 +83,13 @@ int main()
         return 1;
     }
 
-    log_file << "Time(s),State,Raw_AGL(m),Accel_Z(m/s2),KF_Alt(m),KF_Vel(m/s)\n";
+    log_file << "Time(s),State,Raw_AGL(m),Raw_Accel_Z(m/s2),Net_Accel_Z(m/s2),KF_Alt(m),KF_Vel(m/s)\n";
     log_file << std::fixed << std::setprecision(3);
 
     // Init math and start states
     KalmanFilter kf(0.0, 0.0);
     double launchpad_msl = calculate_launchpad_zero(baro);
+    double launchpad_accel_bias = calculate_launchpad_accel_bias(imu);
     const double LOOP_DT = 0.01;
     const auto LOOP_PERIOD = std::chrono::milliseconds(static_cast<int>(LOOP_DT * 1000));
     const auto LOG_PERIOD = std::chrono::milliseconds(100); // 10 Hz logging, 100 Hz control loop
@@ -104,9 +119,10 @@ int main()
         double t = std::chrono::duration<double>(now - start_time).count();
 
         double current_agl = baro.get_altitude() - launchpad_msl;
-        double accel_z = imu.get_accel_z();
+        double raw_accel_z = imu.get_accel_z();
+        double net_accel_z = raw_accel_z * -1.0;
 
-        kf.predict(accel_z, LOOP_DT);
+        kf.predict(net_accel_z, LOOP_DT);
         kf.update(current_agl);
 
         double kf_alt = kf.get_altitude();
@@ -114,7 +130,7 @@ int main()
 
         if (now >= next_log_time)
         {
-            log_file << t << "," << current_state << "," << current_agl << "," << accel_z << "," << kf_alt << "," << kf_vel << "\n";
+            log_file << t << "," << current_state << "," << current_agl << "," << raw_accel_z << "," << net_accel_z << "," << kf_alt << "," << kf_vel << "\n";
             log_file << std::flush;
 
             do
@@ -126,7 +142,7 @@ int main()
         switch (current_state)
         {
         case ON_PAD:
-            if (accel_z > 20.0 && (kf_vel > 5.0 || current_agl > 0.10))
+            if (net_accel_z > 20.0 && (kf_vel > 5.0 || current_agl > 0.10))
             {
                 liftoff_counter++;
             }
@@ -146,7 +162,7 @@ int main()
             break;
 
         case BOOST:
-            if (accel_z < 0.0 && kf_vel > 30.0)
+            if (net_accel_z < 0.0 && kf_vel > 30.0)
             {
                 burnout_counter++;
             }
